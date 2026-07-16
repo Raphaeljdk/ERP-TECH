@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== CLIENTES ====================
+model Cliente {
+  id              String   @id @default(cuid())
+  nome            String
+  cpf             String   @unique
+  email           String?
+  telefone        String?
+  celular         String?
+  dataNascimento  String?
+  cep             String?
+  logradouro      String?
+  numero          String?
+  complemento     String?
+  bairro          String?
+  cidade          String?
+  estado          String?
+  status          String   @default("ATIVO")
+  limiteCredito   Float    @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  vendas     Venda[]
+  financeiro Financeiro[]
+}
+
+// ==================== PRODUTOS ====================
+model Categoria {
+  id        String    @id @default(cuid())
+  nome      String    @unique
+  descricao String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  produtos Produto[]
+}
+
+model Produto {
+  id          String    @id @default(cuid())
+  codigo      String    @unique
+  nome        String
+  descricao   String?
+  precoCusto  Float     @default(0)
+  precoVenda  Float
+  estoqueAtual Int      @default(0)
+  estoqueMinimo Int     @default(5)
+  categoriaId String?
+  codigoBarras String?
+  unidade     String    @default("UN")
+  status      String    @default("ATIVO")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  categoria   Categoria?    @relation(fields: [categoriaId], references: [id])
+  itensVenda  ItemVenda[]
+  movimentacoes MovimentacaoEstoque[]
+}
+
+// ==================== VENDAS ====================
+model Venda {
+  id              String     @id @default(cuid())
+  numero          String     @unique
+  clienteId       String?
+  dataVenda       DateTime   @default(now())
+  subtotal        Float
+  desconto        Float      @default(0)
+  total           Float
+  formaPagamento  String
+  status          String     @default("CONCLUIDA")
+  observacoes     String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  cliente  Cliente?    @relation(fields: [clienteId], references: [id])
+  itens    ItemVenda[]
+}
+
+model ItemVenda {
+  id          String  @id @default(cuid())
+  vendaId     String
+  produtoId   String
+  quantidade  Int
+  precoUnitario Float
+  subtotal    Float
+  createdAt   DateTime @default(now())
+
+  venda   Venda   @relation(fields: [vendaId], references: [id], onDelete: Cascade)
+  produto Produto @relation(fields: [produtoId], references: [id])
+}
+
+// ==================== ESTOQUE ====================
+model MovimentacaoEstoque {
+  id          String   @id @default(cuid())
+  produtoId   String
+  tipo        String   // ENTRADA, SAIDA, AJUSTE
+  quantidade  Int
+  estoqueAntes Int
+  estoqueDepois Int
+  motivo      String?
+  createdAt   DateTime @default(now())
+
+  produto Produto @relation(fields: [produtoId], references: [id])
+}
+
+// ==================== FINANCEIRO ====================
+model Financeiro {
+  id            String   @id @default(cuid())
+  clienteId     String?
+  tipo          String   // RECEBER, PAGAR
+  descricao     String
+  valor         Float
+  dataVencimento String
+  dataPagamento String?
+  status        String   @default("PENDENTE") // PENDENTE, PAGO, ATRASADO
+  formaPagamento String?
+  vendaId       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  cliente Cliente? @relation(fields: [clienteId], references: [id])
+}

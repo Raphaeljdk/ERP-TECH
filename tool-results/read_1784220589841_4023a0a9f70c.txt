@@ -1,0 +1,1360 @@
+     1→     1→🗺️ ROADMAP: De um CRUD Simples a um Sistema ERP Completo
+     2→     2→Vou te mostrar como transformar o simples Sistema de Cadastro em um sistema empresarial completo, evoluindo gradualmente. É como construir uma casa: primeiro o alicerce, depois as paredes, telhado e acabamentos.
+     3→     3→
+     4→     4→📈 A EVOLUÇÃO PASSO A PASSO
+     5→     5→MÊS 1: Fundação - Sistema de Cadastro de Clientes
+     6→     6→Texto
+     7→     7→SEMANA 1-2: CRUD Básico
+     8→     8→├── Tela de cadastro com campos básicos
+     9→     9→├── Salvar no banco MySQL
+    10→    10→├── Listar em tabela
+    11→    11→└── Botões: Novo, Editar, Excluir
+    12→    12→
+    13→    13→SEMANA 3-4: Mellorias
+    14→    14→├── Validação de CPF
+    15→    15→├── Máscaras nos campos
+    16→    16→├── Busca simples
+    17→    17→└── Exportar para CSV
+    18→    18→Neste ponto você tem: Um sistema que cadastra clientes. Só isso. Mas FUNCIONA!
+    19→    19→
+    20→    20→MÊS 2: Expansão - Adicionando Produtos
+    21→    21→Agora seus clientes precisam comprar algo, certo?
+    22→    22→
+    23→    23→Texto
+    24→    24→O que era:
+    25→    25→┌─────────────────────────────┐
+    26→    26→│ Cadastro de Clientes │
+    27→    27→│ - Nome │
+    28→    28→│ - CPF │
+    29→    29→│ - Telefone │
+    30→    30→└─────────────────────────────┘
+    31→    31→
+    32→    32→Se torna:
+    33→    33→┌─────────────────────────────┐
+    34→    34→│ Módulo Clientes │
+    35→    35→│ - Nome, CPF, Telefone │
+    36→    36→│ - Endereço completo │
+    37→    37→│ - Histórico do cliente │
+    38→    38→├─────────────────────────────┤
+    39→    39→│ 🆕 Módulo Produtos │
+    40→    40→│ - Código, Nome, Preço │
+    41→    41→│ - Estoque, Categoria │
+    42→    42→│ - Código de barras │
+    43→    43→└─────────────────────────────┘
+    44→    44→Código que você adiciona:
+    45→    45→
+    46→    46→Java
+    47→    47→Antes você só tinha:
+    48→    48→ClienteDAO.java
+    49→    49→ClienteService.java
+    50→    50→
+    51→    51→Agora você adiciona:
+    52→    52→ProdutoDAO.java // Mesma lógica do ClienteDAO
+    53→    53→ProdutoService.java // Mesma lógica do ClienteService
+    54→    54→Você está REUTILIZANDO o que aprendeu!
+    55→    55→MÊS 3: Conectando os Módulos - Sistema de Vendas
+    56→    56→Clientes + Produtos = VENDAS! 🎉
+    57→    57→
+    58→    58→Texto
+    59→    59→SISTEMA AGORA:
+    60→    60→┌──────────────────────────────────────┐
+    61→    61→│ 🏠 Diretor do Cardápio │
+    62→    62→├──────────────────────────────────────┤
+    63→    63→│ 📋 Clientes │
+    64→    64→│ 📦 Produtos │
+    65→    65→│ 🛒 🆕 Vendas │
+    66→    66→│ - Selecionar cliente │
+    67→    67→│ - Adicionar produtos │
+    68→    68→│ - Calcular total │
+    69→    69→│ - Formas de pagamento │
+    70→    70→│ - Baixar estoque │
+    71→    71→└──────────────────────────────────────┘
+    72→    72→Evolução do código:
+    73→    73→
+    74→    74→Java
+    75→    75→Sua tela de venda USA o que você já criou:
+    76→    76→classe pública TelaVenda estende JFrame {
+    77→    77→ 
+    78→    78→privada ClienteDAO clienteDAO; Já existia!
+    79→    79→ ProdutoDAO privado, produtoDAO; Já existia!
+    80→    80→ privada VendaDAO vendaDAO; NOVO
+    81→    81→ 
+    82→    82→public void iniciarVenda() {
+    83→    83→ Busca cliente (código que você já tem)
+    84→    84→ Cliente cliente = clienteDAO.buscarPorCPF(cpf);
+    85→    85→ 
+    86→    86→Busca produto (código que você já tem)
+    87→    87→ Produto produto = produtoDAO.buscarPorCodigo(codigo);
+    88→    88→ 
+    89→    89→Cria venda (NOVO - mas usando o que já sabe)
+    90→    90→ Venda venda = nova Venda();
+    91→    91→ venda.setCliente(cliente);
+    92→    92→ venda.adicionarItem(produto, quantidade);
+    93→    93→ vendaDAO.salvar(venda);
+    94→    94→ }
+    95→    95→}
+    96→    96→MÊS 4: Profissionalizando - Dashboard e Relatórios
+    97→    97→Texto
+    98→    98→SISTEMA AGORA:
+    99→    99→┌──────────────────────────────────────┐
+   100→   100→│ 🏠 Diretor do Cardápio │
+   101→   101→├──────────────────────────────────────┤
+   102→   102→│ 📋 Clientes │
+   103→   103→│ 📦 Produtos │
+   104→   104→│ 🛒 Vendas │
+   105→   105→│ 📊 🆕 Painel │
+   106→   106→│ ┌─────────────────────────┐ │
+   107→   107→│ │ Vendas Hoje: R$ 5.430 │ │
+   108→   108→│ │ Clientes Novos: 12 │ │
+   109→   109→│ │ Produtos Baixa: 8 ⚠️ │ │
+   110→   110→│ └─────────────────────────┘ │
+   111→   111→│ 📈 🆕 Relatórios │
+   112→   112→│ - Vendas por período │
+   113→   113→│ - Produtos mais vendidos │
+   114→   114→│ - Clientes fiéis │
+   115→   115→└──────────────────────────────────────┘
+   116→   116→Gráficos que você adiciona:
+   117→   117→
+   118→   118→Java
+   119→   119→classe pública DashboardPanel estende JPanel {
+   120→   120→ 
+   121→   121→public void atualizarGraficos() {
+   122→   122→ Usa dados que JÁ EXISTEM no banco
+   123→   123→ List<Venda> vendasHoje = vendaDAO.buscarVendasHoje();
+   124→   124→ List<Cliente> novosClientes = clienteDAO.buscarNovosMes();
+   125→   125→ List<Produto> estoqueBaixo = produtoDAO.buscarEstoqueBaixo();
+   126→   126→ 
+   127→   127→Cartões cria informativos
+   128→   128→ criarCardVendas(vendasHoje);
+   129→   129→ criarCardClientes (novosClientes);
+   130→   130→ criarCardAlertas(estoqueBaixo);
+   131→   131→ 
+   132→   132→Cria gráfica de vendas do mês
+   133→   133→ criarGraficoVendasMes();
+   134→   134→ }
+   135→   135→}
+   136→   136→MÊS 5: Recursos Avançados
+   137→   137→Texto
+   138→   138→SISTEMA AGORA:
+   139→   139→┌──────────────────────────────────────┐
+   140→   140→│ 🔐 🆕 Login / Controle de Acesso │
+   141→   141→│ ├── Admin: Acesso total │
+   142→   142→│ ├── Gerente: Vendas + Relatórios │
+   143→   143→│ └── Vendedor: Apenas PDV │
+   144→   144→├──────────────────────────────────────┤
+   145→   145→│ 📧 🆕 Notificações │
+   146→   146→│ ├── Email para clientes │
+   147→   147→│ ├── Alertas de estoque │
+   148→   148→│ └── Lembretes automáticos │
+   149→   149→├──────────────────────────────────────┤
+   150→   150→│ 💾 🆕 Backup Automático │
+   151→   151→│ └── Banco + Arquivos diários │
+   152→   152→└──────────────────────────────────────┘
+   153→   153→MÊS 6: Polimento Final - virou um ERP!
+   154→   154→Texto
+   155→   155→═══════════════════════════════════════════
+   156→   156→ SEU SISTEMA COMPLETO
+   157→   157→═══════════════════════════════════════════
+   158→   158→
+   159→   159→MÓDULOS INTEGRADOS:
+   160→   160→┌─────────────────────────────────────────┐
+   161→   161→│ 📋 CLIENTES │
+   162→   162→│ ├── Cadastro completo │
+   163→   163→│ ├── Histórico de compras │
+   164→   164→│ └── Limite de crédito │
+   165→   165→├─────────────────────────────────────────┤
+   166→   166→│ 📦 ESTOCO │
+   167→   167→│ ├── Controle de entrada/saída │
+   168→   168→│ ├── Código de barras │
+   169→   169→│ └── Inventário │
+   170→   170→├─────────────────────────────────────────┤
+   171→   171→│ 🛒 VENDAS (PDV) │
+   172→   172→│ ├── Carrinho de compras │
+   173→   173→│ ├── Múltiplos pagamentos │
+   174→   174→│ └── Nota fiscal │
+   175→   175→├─────────────────────────────────────────┤
+   176→   176→│ 💰 FINANCEIRO │
+   177→   177→│ ├── Contas a pagar/receber │
+   178→   178→│ ├── Fluxo de caixa │
+   179→   179→│ └── Comissões │
+   180→   180→├─────────────────────────────────────────┤
+   181→   181→│ 📊 RELATÓRIOS │
+   182→   182→│ ├── Vendas por período │
+   183→   183→│ ├── Lucratividade │
+   184→   184→│ └── Gráficos interativos │
+   185→   185→└─────────────────────────────────────────┘
+   186→   186→🔄 NA PRÁTICA: Como o Código Evolui
+   187→   187→Mês 1 - Seu ClienteDAO simples:
+   188→   188→Java
+   189→   189→classe pública ClienteDAO {
+   190→   190→ 
+   191→   191→public void salvar(Cliente cliente) {
+   192→   192→ String sql = "INSERT INTO clientes (nome, cpf) VALUES (?, ?)";
+   193→   193→ código simples de INSERT
+   194→   194→ }
+   195→   195→ 
+   196→   196→public List<Cliente> listarTodos() {
+   197→   197→ String sql = "SELECT * FROM clientes";
+   198→   198→ código simples de SELECT
+   199→   199→ }
+   200→   200→}
+   201→   201→Mês 3 - ClienteDAO melhorado:
+   202→   202→Java
+   203→   203→classe pública ClienteDAO {
+   204→   204→ 
+   205→   205→// Métodos que já existiam - você só MELHOROU
+   206→   206→ public void salvar(Cliente cliente) {
+   207→   207→ String sql = "INSERT INTO clientes (nome, cpf, e-mail, telefone, " +
+   208→   208→ "endereco, cidade, estado, data_nascimento, status) " +
+   209→   209→ "VALORES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+   210→   210→ Mais campos, validações, tratamento de erro
+   211→   211→ }
+   212→   212→ 
+   213→   213→🆕 Novos métodos adicionados
+   214→   214→ public List<Cliente> buscarAniversariantes(int mes) {
+   215→   215→ String sql = "SELECT * FROM clientes WHERE MONTH(data_nascimento) = ?";
+   216→   216→ Para módulo de marketing/fidelização
+   217→   217→ }
+   218→   218→ 
+   219→   219→public List<Cliente> buscarClientesInativos(int dias) {
+   220→   220→ String sql = "SELECT c.* FROM clientes c " +
+   221→   221→ "ONDE c.id NÃO EM" +
+   222→   222→ "(SELECIONE cliente_id DE vendas " +
+   223→   223→ "ONDE os dados > DATE_SUB(AGORA(), INTERVALO ? DAY))";
+   224→   224→ Para reativar clientes parados
+   225→   225→ }
+   226→   226→}
+   227→   227→Mês 6 - ClienteDAO com tudo integrado:
+   228→   228→Java
+   229→   229→classe pública ClienteDAO {
+   230→   230→ 
+   231→   231→Agora com histórico completo
+   232→   232→ public ClienteCompleto buscarHistoricoCompleto(int clienteId) {
+   233→   233→ ClienteCompleto = novo ClienteCompleto ();
+   234→   234→ 
+   235→   235→Dados básicos (já existiam)
+   236→   236→ completo.setCliente(this.buscarPorId(clienteId));
+   237→   237→ 
+   238→   238→Histórico de compras (adicionado no mês 3)
+   239→   239→ completo.setCompras(vendaDAO.buscarPorCliente(clienteId));
+   240→   240→ 
+   241→   241→Saldo financeiro (adicionado no mês 6)
+   242→   242→ completo.setSaldoDevedor(financeiroDAO.buscarSaldo(clienteId));
+   243→   243→Últimas interações (adicionado no mês 5)
+   244→   244→ completo.setUltimasInteracoes(logDAO.buscarInteracoes(clienteId));
+   245→   245→ 
+   246→   246→retorno completo;
+   247→   247→ }
+   248→   248→}
+   249→   249→🎯 O SEGREDO: Cada Feature se Apoia na Anterior
+   250→   250→Texto
+   251→   251→MÊS 1: Cadastro de Clientes
+   252→   252→ ↓ (serve de base para)
+   253→   253→MÊS 2: Cadastro de Produtos + Controle de Estoque
+   254→   254→ ↓ (serve de base para)
+   255→   255→MÊS 3: PDV (usa Clientes + Produtos + Estoque)
+   256→   256→ ↓ (serve de base para)
+   257→   257→MÊS 4: Relatórios (usa dados de Vendas + Clientes + Produtos)
+   258→   258→ ↓ (serve de base para)
+   259→   259→MÊS 5: Financeiro (usa dados de Vendas + Clientes)
+   260→   260→ ↓ (serve de base para)
+   261→   261→MÊS 6: ERP Completo (tudo integrado!)
+   262→   262→💡 EXEMPLO PRÁTICO DA EVOLUÇÃO
+   263→   263→Semana 1 do Mês 1:
+   264→   264→Java
+   265→   265→// Seu programa faz ISSO:
+   266→   266→Tela: [Nome: ____] [CPF: ____] [Salvar]
+   267→   267→Resultado: Cliente salvo no banco. Fim.
+   268→   268→Semana 4 do Mês 6:
+   269→   269→Java
+   270→   270→// Seu programa faz ISSO:
+   271→   271→Tela: 
+   272→   272→1. Atendente faz login
+   273→   273→2. Abre PDV, busca cliente "João"
+   274→   274→3. Sistema mostra: 
+   275→   275→ - Dados do João (do Módulo Clientes)
+   276→   276→ - Histórico de compras (do Módulo Vendas)
+   277→   277→ - Limite de crédito disponível (do Módulo Financeiro)
+   278→   278→ - Sugestões de produtos baseado no perfil (do Módulo Relatórios)
+   279→   279→4. Adiciona produtos, sistema:
+   280→   280→ - Verifica estoque em tempo real (Módulo Estoque)
+   281→   281→ - Calcula desconto por fidelidade (Módulo Clientes)
+   282→   282→ - Gera comissão pro vendedor (Módulo Financeiro)
+   283→   283→5. Finaliza venda:
+   284→   284→ - Baixa estoque (Módulo Estoque)
+   285→   285→ - Atualização financeira (Módulo Financeiro)
+   286→   286→ - Dispara email pro cliente (Módulo Notificações)
+   287→   287→ - Atualiza dashboard em tempo real (Módulo Relatórios)
+   288→   288→🚀 COMO COMEÇAR HOJE
+   289→   289→Roteiro da Semana 1:
+   290→   290→Dia 1: Criar banco de dados e tabela clientes
+   291→   291→
+   292→   292→SQL
+   293→   293→CRIAR sistema_vendas DE BANCO DE DADOS;
+   294→   294→USE sistema_vendas;
+   295→   295→CRIAR TABELA (
+   296→   296→ id INT AUTO_INCREMENT CHAVE PRIMÁRIA,
+   297→   297→ nome VARCHAR(100),
+   298→   298→ cpf VARCHAR(14)
+   299→   299→);
+   300→   300→Dia 2: Criar tela de cadastro (só nome e CPF)
+   301→   301→
+   302→   302→Java
+   303→   303→quadro JFrame = novo JFrame("Cadastro");
+   304→   304→JTextField txtNome = novo JTextField();
+   305→   305→JTextField txtCPF = novo JTextField();
+   306→   306→JButton btnSalvar = novo JButton ("Salvar");
+   307→   307→Conecte no banco e faça INSERT
+   308→   308→Dia 3: Adicionar listagem em tabela
+   309→   309→
+   310→   310→Java
+   311→   311→JTable tabela = novo JTable();
+   312→   312→Popular com dados do banco
+   313→   313→Dia 4: Adicionar botão Editar e Excluir
+   314→   314→
+   315→   315→Dia 5: Adicionar validação de CPF e máscara
+   316→   316→
+   317→   317→Dia 6: Adicionar campo de busca
+   318→   318→
+   319→   319→Dia 7: Exportar para CSV e polir interface
+   320→   320→
+   321→   321→Fim da semana 1: Você já tem um CRUD funcional! 🎉
+   322→   322→
+   323→   323→Próxima semana: Começa a adicionar o módulo de Produtos, usando a MESMA estrutura que você aprendeu.
+   324→   324→
+   325→   325→📊 Visualização do Crescimento
+   326→   326→Texto
+   327→   327→Complexidade do Sistema:
+   328→   328→ ┌─────────────┐
+   329→   329→ Mês 6 │ ERP COMPLETO│
+   330→   330→ ┌────┤ 15+ tabelas │
+   331→   331→ Mês 5 │ └─────────────┘
+   332→   332→ ┌───────┤ Financeiro
+   333→   333→ Mês 4 │ │ Dashboard
+   334→   334→ ┌────────┤ Gráficos
+   335→   335→ Mês 3 │ │ Relatórios
+   336→   336→ ┌───────┤ Vendas
+   337→   337→ Mês 2 │ └────────────
+   338→   338→┌───────┤ Produtos
+   339→   339→│ │ Estoque
+   340→   340→Mês 1 └────────────────────
+   341→   341→Clientes
+   342→   342→CRUD
+   343→   343→Princípio fundamental: Cada etapa nova REUTILIZA e EXPANDE o que você já construiu. Você não reescreve, você EVOLUI!
+   344→   344→
+   345→   345→É como um jogo de construção: você começa com uma casa simples e vai adicionando cômodos, andares, garagem, jardim... No final, tem uma mansão! 🏠➡️🏰
+   346→   346→
+   347→   347→Quer começar pelo passo 1? Posso te dar o código completo do CRUD de clientes para você já ter algo rodando hoje!
+   348→   348→
+   349→   349→me de mais passos para eu melhorar nesse sistema
+   350→   350→🚀 GUIA COMPLETO DE EVOLUÇÃO: 50 MELHORIAS PARA SEU SISTEMA
+   351→   351→Vou te dar um caminho detalhado com 50 passos para transformar seu CRUD simples em um sistema profissional. Cada passo adiciona uma feature real e valiosa!
+   352→   352→
+   353→   353→📊 VISÃO GERAL DOS NÍVEIS
+   354→   354→Texto
+   355→   355→NÍVEL 1 (1-10): CRUD Básico Funcional
+   356→   356→NÍVEL 2 (11-20): Validações e UX
+   357→   357→NÍVEL 3 (21-30): Recursos Intermediários 
+   358→   358→NÍVEL 4 (31-40): Performance e Arquitetura
+   359→   359→NÍVEL 5 (41-50): Recursos Profissionais
+   360→   360→🟢 NÍVEL 1: CRUD BÁSICO FUNCIONAL
+   361→   361→Passo 1: Estrutura do Projeto
+   362→   362→Texto
+   363→   363→📁 seu-projeto/
+   364→   364→├── 📁 src/
+   365→   365→│ ├── 📁 principal/
+   366→   366→│ │ ├── 📁 Java/
+   367→   367→│ │ │ └── 📁 com/
+   368→   368→│ │ │ └── 📁 seuapp/
+   369→   369→│ │ │ │ ├── 📁 modelo/
+   370→   370→│ │ │ ├── 📁 dao/
+   371→   371→│ │ │ ├── 📁 vista/
+   372→   372→│ │ │ └── Main.java
+   373→   373→│ │ └── 📁 recursos/
+   374→   374→│ │ └── banco.propriedades
+   375→   375→│ └── 📁 teste/
+   376→   376→└── pom.xml
+   377→   377→Código do Main.java:
+   378→   378→
+   379→   379→Java
+   380→   380→classe pública Main {
+   381→   381→ public static void main(String[] args) {
+   382→   382→ Tenta conectar no banco antes de abrir o sistema
+   383→   383→ try {
+   384→   384→ ConnectionFactory.testarConexao();
+   385→   385→ 
+   386→   386→Aplica tema moderno
+   387→   387→ FlatLightLaf.setup();
+   388→   388→ 
+   389→   389→Abre a tela principal
+   390→   390→ SwingUtilities.invokeLater(() -> {
+   391→   391→ novo TelaPrincipal().setVisible(true);
+   392→   392→ });
+   393→   393→ 
+   394→   394→} catch (SQLException e) {
+   395→   395→ JOptionPane.showMessageDialog(
+   396→   396→ nulo,
+   397→   397→ "Erro ao conectar no banco de dados!\n" + e.getMessage(),
+   398→   398→ "Erro de Conexão",
+   399→   399→ JOptionPane.ERROR_MESSAGE
+   400→   400→ );
+   401→   401→ System.exit(1);
+   402→   402→ }
+   403→   403→ }
+   404→   404→}
+   405→   405→Passo 2: Conexão com Banco usando Singleton
+   406→   406→Java
+   407→   407→classe pública ConnectionFactory {
+   408→   408→ 
+   409→   409→instância privada estática de ConnectionFactory;
+   410→   410→ conexão privada;
+   411→   411→ 
+   412→   412→Configurações (depois vamos por em arquivo .properties)
+   413→   413→ URL final estática privada = "jdbc:mysql://localhost:3306/sistema_db";
+   414→   414→ estática privada final String USER = "raiz";
+   415→   415→ estática privada final String PASSWORD = "123456";
+   416→   416→ 
+   417→   417→private ConnectionFactory() {
+   418→   418→ try {
+   419→   419→ Class.forName("com.mysql.cj.jdbc.Driver");
+   420→   420→ this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
+   421→   421→ } captura (Exceção e) {
+   422→   422→ lançar um novo RuntimeException ("Erro na conexão!", e);
+   423→   423→ }
+   424→   424→ }
+   425→   425→ 
+   426→   426→ConnectionFactory getInstance() estático público {
+   427→   427→ if (instance == null) {
+   428→   428→ instance = nova ConnectionFactory();
+   429→   429→ }
+   430→   430→ return instance;
+   431→   431→ }
+   432→   432→ 
+   433→   433→public Connection getConnection() {
+   434→   434→ try {
+   435→   435→ Reconecta se a conexão caiu
+   436→   436→ if (connection == null || connection.isClosed()) {
+   437→   437→ conexão = DriverManager.getConnection(URL, USUÁRIO, SENHA);
+   438→   438→ }
+   439→   439→ } catch (SQLException e) {
+   440→   440→ lançar um novo RuntimeException ("Erro ao reconectar!", e);
+   441→   441→ }
+   442→   442→ retorne a conexão;
+   443→   443→ }
+   444→   444→}
+   445→   445→Passo 3: Model Cliente com Builder Pattern
+   446→   446→Java
+   447→   447→classe pública Cliente {
+   448→   448→ ID inteiro privado;
+   449→   449→ nome de cordas privado;
+   450→   450→ cpf privado String;
+   451→   451→ e-mail privado String;
+   452→   452→ telefone privado String;
+   453→   453→ String celular privado;
+   454→   454→ dados privados LocalDate dataNascimento;
+   455→   455→ soldado String cep;
+   456→   456→ soldado String logradouro;
+   457→   457→ número de cordas privado;
+   458→   458→ complemento privado de cordas;
+   459→   459→ bairro privado String;
+   460→   460→ a privada String cidade;
+   461→   461→ soldado String estado;
+   462→   462→ status privado StatusCliente;
+   463→   463→ dados privados LocalDateTimeCadastro;
+   464→   464→ privada LocalDateTime ultimaAtualizacao;
+   465→   465→ 
+   466→   466→Enum para status
+   467→   467→ public enum StatusCliente {
+   468→   468→ ATIVO ("Ativo", Color.GREEN),
+   469→   469→ INATIVO ("Inativo", Color.ORANGE),
+   470→   470→ BLOQUEADO("Bloqueado", Color.RED);
+   471→   471→ 
+   472→   472→privado String descrição;
+   473→   473→ coro de cor privado;
+   474→   474→ 
+   475→   475→StatusCliente(String descrição, Color cor) {
+   476→   476→ this.descricao = descrição;
+   477→   477→ this.cor = cor;
+   478→   478→ }
+   479→   479→ 
+   480→   480→String public getDescricao() { return descricao; }
+   481→   481→ public Color getCor() { return cor; }
+   482→   482→ }
+   483→   483→ 
+   484→   484→Padrão de Construtor
+   485→   485→ classe estática pública Builder {
+   486→   486→ privado Cliente cliente = novo Cliente();
+   487→   487→ 
+   488→   488→nome construtor público (nome de corda) {
+   489→   489→ cliente.nome = nome;
+   490→   490→ devolva isto;
+   491→   491→ }
+   492→   492→ 
+   493→   493→Construtor público cpf(String cpf) {
+   494→   494→ cliente.cpf = cpf;
+   495→   495→ devolva isto;
+   496→   496→ }
+   497→   497→ 
+   498→   498→Ema pública de construtoril(E-mail em cadeia) {
+   499→   499→ cliente.email = e-mail;
+   500→   500→ devolva isto;
+   501→   501→ }
+   502→   502→ 
+   503→   503→// ... outros campos
+   504→   504→ 
+   505→   505→Cliente público build() {
+   506→   506→ validar();
+   507→   507→ cliente retornado;
+   508→   508→ }
+   509→   509→ 
+   510→   510→private void validar() {
+   511→   511→ if (cliente.nome == null || cliente.nome.trim().isEmpty()) {
+   512→   512→ lançar um novo IllegalArgumentException("Nome é obrigatório!");
+   513→   513→ }
+   514→   514→ }
+   515→   515→ }
+   516→   516→ 
+   517→   517→// Getters e Setters
+   518→   518→ Integer público getId() { return id; }
+   519→   519→ public void setId(Integer id) { this.id = id; }
+   520→   520→ // ... Levantadores/Levantadores de Demais
+   521→   521→}
+   522→   522→Passo 4: DAO Genérico
+   523→   523→Java
+   524→   524→classe abstract public GenericDAO<T, ID> {
+   525→   525→ 
+   526→   526→protected Connection getConnection() {
+   527→   527→ return ConnectionFactory.getInstance().getConnection();
+   528→   528→ }
+   529→   529→ 
+   530→   530→abstrato protegido String_getTableName();
+   531→   531→ abstrato protegido String getIdColumn();
+   532→   532→ o abstrato protegido T mapResultSetToEntity(ResultSet rs) lança SQLException;
+   533→   533→ abstrato protegido void setParametersForInsert(PreparedStatement stmt, T entity) lança SQLException;
+   534→   534→ abstrato protegido void setParametersForUpdate (PreparedStatement stmt, entidade T) lança SQLException;
+   535→   535→ 
+   536→   536→Método INSERT genérico
+   537→   537→ public T save(T entidade) {
+   538→   538→ String sql = "INSERT INTO " + getTableName() + " VALUES (?)"; Simplificado
+   539→   539→ try (PreparedStatement stmt = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+   540→   540→ setParametersForInsert(stmt, entity);
+   541→   541→ stmt.executeUpdate();
+   542→   542→ 
+   543→   543→ResultSet rs = stmt.getGeneratedKeys();
+   544→   544→ se (rs.next()) {
+   545→   545→ setId(entity, rs.getInt(1));
+   546→   546→ }
+   547→   547→ retornar a entidade;
+   548→   548→ } catch (SQLException e) {
+   549→   549→ lançar um novo RuntimeException ("Erro ao salvar!", e);
+   550→   550→ }
+   551→   551→ }
+   552→   552→ 
+   553→   553→abstrato protegido void setId(T entity, ID ID);
+   554→   554→ 
+   555→   555→Método SELECT genérico
+   556→   556→ public List<T> findAll() {
+   557→   557→ List<T> list = nova ArrayList<>();
+   558→   558→ String sql = "SELECT * FROM " + getTableName() + " ORDER BY " + getIdColumn();
+   559→   559→ 
+   560→   560→try (Statement stmt = getConnection().createStatement();
+   561→   561→ ResultSet rs = stmt.executeQuery(sql)) {
+   562→   562→ 
+   563→   563→enquanto (rs.next()) {
+   564→   564→ list.add(mapResultSetToEntity(rs));
+   565→   565→ }
+   566→   566→ } catch (SQLException e) {
+   567→   567→ lançar um novo RuntimeException ("Erro ao listar!", e);
+   568→   568→ }
+   569→   569→ lista de retorno;
+   570→   570→ }
+   571→   571→ 
+   572→   572→DELETE
+   573→   573→ empty public delete(ID ID) {
+   574→   574→ String sql = "DELETE FROM " + getTableName() + " WHERE " + getIdColumn() + " = ?";
+   575→   575→ try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+   576→   576→ stmt.setObject(1, id);
+   577→   577→ stmt.executeUpdate();
+   578→   578→ } catch (SQLException e) {
+   579→   579→ lançar um novo RuntimeException ("Erro ao deletar!", e);
+   580→   580→ }
+   581→   581→ }
+   582→   582→}
+   583→   583→Passo 5: Interface Principal com Menu
+   584→   584→Java
+   585→   585→classe pública TelaPrincipal estende JFrame {
+   586→   586→ 
+   587→   587→privada JPanel contentPane;
+   588→   588→ CardLayout privado, cardLayout;
+   589→   589→ privado JMenuMenu Bar;
+   590→   590→ JToolBar ToolBar privado;
+   591→   591→ privado JStatusStatus da OrdemBar;
+   592→   592→ 
+   593→   593→Painéis (telas)
+   594→   594→ privadoClienteListPanel clienteListPanel;
+   595→   595→ privadoClienteFormPanel clienteFormPanel;
+   596→   596→ 
+   597→   597→TelaPrincipal() {
+   598→   598→ configurarJanela();
+   599→   599→ criarMenuBar();
+   600→   600→ criarToolBar();
+   601→   601→ criarPainelConteudo();
+   602→   602→ criarStatusBar();
+   603→   603→ pack();
+   604→   604→ setLocationRelativeTo(null);
+   605→   605→ }
+   606→   606→ 
+   607→   607→private void configurarJanela() {
+   608→   608→ setTitle("Sistema de Cadastro v1.0");
+   609→   609→ setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   610→   610→ setMinimumSize (nova Dimensão(1024, 768));
+   611→   611→ setEstadoEstendido(JFrame.MAXIMIZED_BOTH);
+   612→   612→ 
+   613→   613→try {
+   614→   614→ setIconImage(ImageIO.read(getClass().getResource("/icons/app.png")));
+   615→   615→ } catch (IOException e) {
+   616→   616→ e.printStackTrace();
+   617→   617→ }
+   618→   618→ }
+   619→   619→ 
+   620→   620→private void criarMenuBar() {
+   621→   621→ menuBar = novo JMenuBar();
+   622→   622→ 
+   623→   623→// Menu Arquivo
+   624→   624→ JMenu menuArquivo = novo JMenu("Arquivo");
+   625→   625→ menuArquivo.setMnemonic(KeyEvent.VK_A);
+   626→   626→ 
+   627→   627→JMenuItem itemNovoCliente = new JMenuItem("Novo Cliente", KeyEvent.VK_N);
+   628→   628→ itemNovoCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
+   629→   629→ itemNovoCliente.setIcon(new ImageIcon(getClass().getResource("/icons/add.png")));
+   630→   630→ itemNovoCliente.addActionListener(e -> novoCliente());
+   631→   631→ 
+   632→   632→JMenuItem itemExportar = novo JMenuItem("Exportar...", KeyEvent.VK_E);
+   633→   633→ itemExportar.setIcon(new ImageIcon(getClass().getResource("/icons/export.png")));
+   634→   634→ itemExportar.addActionListener(e -> exportarDados());
+   635→   635→ 
+   636→   636→JMenuItem itemSair = novo JMenuItem("Sair", KeyEvent.VK_S);
+   637→   637→ itemSair.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK));
+   638→   638→ itemSair.addActionListener(e -> System.exit(0));
+   639→   639→ 
+   640→   640→menuArquivo.add(itemNovoCliente);
+   641→   641→ menuArquivo.addSeparator();
+   642→   642→ menuArquivo.add(itemExportar);
+   643→   643→ menuArquivo.addSeparator();
+   644→   644→ menuArquivo.add(itemSair);
+   645→   645→ 
+   646→   646→// Menu Editar
+   647→   647→ JMenu menuEditar = novo JMenu("Editar");
+   648→   648→ // ... Itens
+   649→   649→ 
+   650→   650→// Menu Exibir
+   651→   651→ JMenu menuExibir = novo JMenu("Exibir");
+   652→   652→ // ... Itens
+   653→   653→ 
+   654→   654→// Menu Ferramentas
+   655→   655→ JMenu menuFerramentas = new JMenu("Ferramentas");
+   656→   656→ // ... Itens
+   657→   657→ 
+   658→   658→// Menu Ajuda
+   659→   659→ JMenu menuAjuda = new JMenu("Ajuda");
+   660→   660→ // ... Itens
+   661→   661→ 
+   662→   662→menuBar.add(menuArquivo);
+   663→   663→ menuBar.add(menuEditar);
+   664→   664→ menuBar.add(menuExibir);
+   665→   665→ menuBar.add(menuFerramentas);
+   666→   666→ menuBar.add(menuAjuda);
+   667→   667→ 
+   668→   668→setJMenuBar (menuBar);
+   669→   669→ }
+   670→   670→ 
+   671→   671→private void criarToolBar() {
+   672→   672→ toolBar = novo JToolBar();
+   673→   673→ toolBar.setFloatable(falso);
+   674→   674→ 
+   675→   675→JButton btnNovo = novo JButton(novo ImageIcon(getClass().getResource("/icons/add.png")));
+   676→   676→ btnNovo.setToolTipText("Novo Cliente (Ctrl+N)");
+   677→   677→ btnNovo.addActionListener(e -> novoCliente());
+   678→   678→ 
+   679→   679→JButton btnEditar = novo JButton(novo ImageIcon(getClass().getResource("/icons/edit.png")));
+   680→   680→ btnEditar.setToolTipText("Editar Cliente");
+   681→   681→ 
+   682→   682→JButton btnExcluir = novo JButton(novo ImageIcon(getClass().getResource("/icons/delete.png")));
+   683→   683→ btnExcluir.setToolTipText("Excluir Cliente");
+   684→   684→ 
+   685→   685→JButton btnAtualizar = new JButton(new ImageIcon(getClass().getResource("/icons/refresh.png")));
+   686→   686→ btnAtualizar.setToolTipText("Atualizar Lista (F5)");
+   687→   687→ btnAtualizar.addActionListener(e -> clienteListPanel.atualizarTabela());
+   688→   688→ 
+   689→   689→JButton btnExportar = novo JButton(novo ImageIcon(getClass().getResource("/icons/export.png")));
+   690→   690→ btnExportar.setToolTipText("Exportar Dados");
+   691→   691→ 
+   692→   692→JButton btnImprimir = new JButton(new ImageIcon(getClass().getResource("/icons/print.png")));
+   693→   693→ btnImprimir.setToolTipText("Imprimir Relatório");
+   694→   694→ 
+   695→   695→toolBar.add(btnNovo);
+   696→   696→ toolBar.add(btnEditar);
+   697→   697→ toolBar.add(btnExcluir);
+   698→   698→ toolBar.addSeparator();
+   699→   699→ toolBar.add(btnAtualizar);
+   700→   700→ toolBar.add(btnExportar);
+   701→   701→ toolBar.add(btnImprimir);
+   702→   702→ 
+   703→   703→add(toolBar, BorderLayout.NORTH);
+   704→   704→ }
+   705→   705→ 
+   706→   706→private void criarPainelConteudo() {
+   707→   707→ cardLayout = novo CardLayout();
+   708→   708→ contentPane = novo JPanel(cardLayout);
+   709→   709→ 
+   710→   710→clienteListPanel = novo ClienteListPanel (this);
+   711→   711→ contentPane.add(clienteListPanel, "LISTA");
+   712→   712→ 
+   713→   713→add(contentPane, BorderLayout.CENTER);
+   714→   714→ }
+   715→   715→ 
+   716→   716→private void criarStatusBar() {
+   717→   717→ statusBar = novo JStatusBar();
+   718→   718→ statusBar.setLeftMessage("Pronto");
+   719→   719→ statusBar.setRightMessage("Total: 0 clientes");
+   720→   720→ add(statusBar, BorderLayout.SOUTH);
+   721→   721→ }
+   722→   722→ 
+   723→   723→public void novoCliente() {
+   724→   724→ clienteFormPanel = novo ClienteFormPanel (this, null);
+   725→   725→ contentPane.add(clienteFormPanel, "FORM");
+   726→   726→ cardLayout.show(contentPane, "FORM");
+   727→   727→ }
+   728→   728→ 
+   729→   729→public void mostrarLista() {
+   730→   730→ cardLayout.show(contentPane, "LISTA");
+   731→   731→ clienteListPanel.atualizarTabela();
+   732→   732→ }
+   733→   733→}
+   734→   734→Passo 6: Tabela de Listagem Avançada
+   735→   735→Java
+   736→   736→classe pública ClienteTablePanel estende JPanel {
+   737→   737→ 
+   738→   738→soldado JTable tabela;
+   739→   739→ privada ClienteTableModel TableModel;
+   740→   740→ privada JTextField txtBusca;
+   741→   741→ privado JComboBox<String> cmbFiltro;
+   742→   742→ privado JComboBox<String> cmbStatus;
+   743→   743→ soldado JButton btnBuscar;
+   744→   744→ soldado JButton btnLimpar;
+   745→   745→ private TableRowSorter<ClienteTableModel> sorter;
+   746→   746→ 
+   747→   747→public ClienteTablePanel() {
+   748→   748→ setLayout (novo BorderLayout(5, 5));
+   749→   749→ setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+   750→   750→ 
+   751→   751→criarPainelBusca();
+   752→   752→ criarTabela();
+   753→   753→ criarPaginação();
+   754→   754→ }
+   755→   755→ 
+   756→   756→private void criarPainelBusca() {
+   757→   757→ JPanel painelBusca = novo JPanel(novo FlowLayout(FlowLayout.LEFT));
+   758→   758→ 
+   759→   759→painelBusca.add(novo JLabel("Buscar:"));
+   760→   760→ 
+   761→   761→txtBusca = novo JPlaceholderTextField(20);
+   762→   762→ txtBusca.setPlaceholder("Digite nome, CPF, email...");
+   763→   763→ txtBusca.addKeyListener(new KeyAdapter() {
+   764→   764→ @Override
+   765→   765→ public void keyReleased(KeyEvent e) {
+   766→   766→ if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+   767→   767→ filtrar();
+   768→   768→ }
+   769→   769→ }
+   770→   770→ });
+   771→   771→ painelBusca.add(txtBusca);
+   772→   772→ 
+   773→   773→cmbFiltro = new JComboBox<>(new String[]{
+   774→   774→ "Todos os campos", "Nome", "CPF", "Email", "Telefone", "Cidade"
+   775→   775→ });
+   776→   776→ painelBusca.add(cmbFiltro);
+   777→   777→ 
+   778→   778→cmbStatus = novo JComboBox<>(novo String[]{
+   779→   779→ "Todos", "Ativo", "Inativo", "Bloqueado"
+   780→   780→ });
+   781→   781→ painelBusca.add(cmbStatus);
+   782→   782→ 
+   783→   783→btnBuscar = novo JButton(" 🔍 Buscar");
+   784→   784→ btnBuscar.addActionListener(e -> filtrar());
+   785→   785→ painelBusca.add(btnBuscar);
+   786→   786→ 
+   787→   787→btnLimpar = novo JButton(" ✖ Limpar");
+   788→   788→ btnLimpar.addActionListener(e -> limparFiltros());
+   789→   789→ painelBusca.add(btnLimpar);
+   790→   790→ 
+   791→   791→adicionar (painelBusca, BorderLayout.NORTH);
+   792→   792→ }
+   793→   793→ 
+   794→   794→private void criarTabela() {
+   795→   795→ tableModel = novo ClienteTableModel();
+   796→   796→ tabela = new JTable(tableModel) {
+   797→   797→ @Override
+   798→   798→ public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+   799→   799→ Component comp = super.prepareRenderer(renderizador, linha, coluna);
+   800→   800→ 
+   801→   801→Listras de zebra
+   802→   802→ if (!isRowSelected(row)) {
+   803→   803→ comp.setBackground(row % 2 == 0 ? Cor. BRANCO: nova cor (245, 245, 250));
+   804→   804→ }
+   805→   805→ 
+   806→   806→Colorir linha por status
+   807→   807→ String status = (String) getValueAt(row, 7); Status Coluna
+   808→   808→ if ("Inativo".equals(status) && !isRowSelected(row)) {
+   809→   809→ comp.setBackground(nova Cor(255, 248, 220));
+   810→   810→ } senão se ("Bloqueado".equals(status) && !isRowSelected(row)) {
+   811→   811→ comp.setBackground(nova Cor(255, 230, 230));
+   812→   812→ }
+   813→   813→ 
+   814→   814→Retorno de compo;
+   815→   815→ }
+   816→   816→ };
+   817→   817→ 
+   818→   818→Configurar colunas
+   819→   819→ tabela.getColumnModel().getColumn(0).setPreferredWidth(50); ID
+   820→   820→ tabela.getColumnModel().getColumn(1).setPreferredWidth(200); Nome
+   821→   821→ tabela.getColumnModel().getColumn(2).setPreferredWidth(120); CPF
+   822→   822→ tabela.getColumnModel().getColumn(7).setPreferredWidth(80); Status
+   823→   823→ 
+   824→   824→Status com renderer customizado
+   825→   825→ tabela.getColumnModel().getColumn(7).setCellRenderer(new StatusCellRenderer());
+   826→   826→ 
+   827→   827→Ordenação
+   828→   828→ sorter = novo TableRowSorter<>(tableModel);
+   829→   829→ tabela.setRowSorter(sorter);
+   830→   830→ 
+   831→   831→Menu contextual (botão direito)
+   832→   832→ JPopupMenu popupMenu = criarMenuContextual();
+   833→   833→ tabela.setComponentPopupMenu(popupMenu);
+   834→   834→ 
+   835→   835→Duplo clique para editar
+   836→   836→ tabela.addMouseListener(new MouseAdapter() {
+   837→   837→ @Override
+   838→   838→ public void mouseClicked(MouseEvent e) {
+   839→   839→ if (e.getClickCount() == 2) {
+   840→   840→ editarClienteSelecionado();
+   841→   841→ }
+   842→   842→ }
+   843→   843→ });
+   844→   844→ 
+   845→   845→JScrollPane scrollPane = novo JScrollPane(tabela);
+   846→   846→ scrollPane.setBorder(BorderFactory.createTitledBorder("Clientes Cadastrados"));
+   847→   847→ 
+   848→   848→add(scrollPane, BorderLayout.CENTER);
+   849→   849→ }
+   850→   850→ 
+   851→   851→private JPopupMenu criarMenuContextual() {
+   852→   852→ popup de JPopupMenu = novo JPopupMenu();
+   853→   853→ 
+   854→   854→JMenuItem itemEditar = novo JMenuItem(" ✏️ Editar");
+   855→   855→ itemEditar.addActionListener(e -> editarClienteSelecionado());
+   856→   856→ 
+   857→   857→JMenuItem itemExcluir = novo JMenuItem(" 🗑️ Excluir");
+   858→   858→ itemExcluir.addActionListener(e -> excluirClienteSelecionado());
+   859→   859→ 
+   860→   860→JMenuItem itemDuplicar = novo JMenuItem("📋 Duplicar");
+   861→   861→ itemDuplicar.addActionListener(e -> duplicarCliente());
+   862→   862→ 
+   863→   863→popup.add(itemEditar);
+   864→   864→ popup.add(itemDuplicar);
+   865→   865→ popup.addSeparator();
+   866→   866→ popup.add(itemExcluir);
+   867→   867→ 
+   868→   868→// Submenu Alterar Status
+   869→   869→ JMenu menuStatus = novo JMenu(" 🔄 Alterar Status");
+   870→   870→ JMenuItem itemAtivar = novo JMenuItem("Ativar");
+   871→   871→ JMenuItem itemInativar = new JMenuItem("Inativar");
+   872→   872→ JMenuItem itemBloquear = new JMenuItem("Bloquear");
+   873→   873→ menuStatus.add(itemAtivar);
+   874→   874→ menuStatus.add(itemInativar);
+   875→   875→ menuStatus.add(itemBloquear);
+   876→   876→ popup.add(menuStatus);
+   877→   877→ 
+   878→   878→popup.addSeparator();
+   879→   879→ 
+   880→   880→JMenuItem itemEnviarEmail = novo JMenuItem(" 📧 Enviar Email");
+   881→   881→ popup.add(itemEnviarEmail);
+   882→   882→ 
+   883→   883→JMenuItem itemExportar = novo JMenuItem(" 📊 Exportar Selecionado");
+   884→   884→ popup.add(itemExportar);
+   885→   885→ 
+   886→   886→popup de retorno;
+   887→   887→ }
+   888→   888→}
+   889→   889→Passo 7: Formulário com Validação em Tempo Real
+   890→   890→Java
+   891→   891→classe pública ClienteFormPanel estende JPanel {
+   892→   892→ 
+   893→   893→privado JTextField txtNome, txtCPF, txtEmail, txtTelefone, txtCelular;
+   894→   894→ privado JFormattedTextField txtCEP, txtDataNascimento;
+   895→   895→ privada JComboBox<String> cmbEstado;
+   896→   896→ privada JTextArea txtObservacos;
+   897→   897→ soldado JButton btnSalvar, btnCancelar;
+   898→   898→ soldado JLabel IblValidacao;
+   899→   899→ 
+   900→   900→cliente privado;
+   901→   901→ privado booleano modoEdicao;
+   902→   902→ 
+   903→   903→public ClienteFormPanel(Cliente cliente) {
+   904→   904→ this.cliente = cliente;
+   905→   905→ this.modoEdicao = cliente != null;
+   906→   906→ 
+   907→   907→setLayout (novo BorderLayout());
+   908→   908→ setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+   909→   909→ 
+   910→   910→criarCabecalho();
+   911→   911→ criarCampos();
+   912→   912→ criarBotoes();
+   913→   913→ 
+   914→   914→if (modoEdicao) {
+   915→   915→ preencherCampos();
+   916→   916→ }
+   917→   917→ }
+   918→   918→ 
+   919→   919→private void criarCampos() {
+   920→   920→ JPanel painelCampos = novo JPanel(novo GridBagLayout());
+   921→   921→ GridBagConstraints gbc = new GridBagConstraints();
+   922→   922→ gbc.insets = novos Insets(5, 5, 5, 5);
+   923→   923→ gbc.fill = GradeBagConstraints.HORIZONTAL;
+   924→   924→ 
+   925→   925→// Linha 0: Nome
+   926→   926→ adicionarCampo(painelCampos, "Nome:*", 
+   927→   927→ txtNome = novo JPlaceholderTextField("Nome completo"), 0);
+   928→   928→ 
+   929→   929→CPF com máscara e validação
+   930→   930→ txtCPF = novo JFormattedTextField(novo MaskFormatter("###.###.###-##"));
+   931→   931→ adicionarCampo(painelCampos, "CPF:*", txtCPF, 1);
+   932→   932→ 
+   933→   933→E-mail com marcador de posição
+   934→   934→ txtEmail = novo JPlaceholderTextField("exemplo@email.com");
+   935→   935→ adicionarCampo(painelCampos, "Email:", txtEmail, 2);
+   936→   936→ 
+   937→   937→Validação em tempo real
+   938→   938→ txtEmail.addFocusListener(new FocusAdapter() {
+   939→   939→ @Override
+   940→   940→ empty público focusLost(FocusEvent e) {
+   941→   941→ if (!txtEmail.getText().isEmpty() & ! ValidadorEmail.validar(txtEmail.getText())) {
+   942→   942→ txtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
+   943→   943→ lblValidacao.setText(" ❌ Email inválido!");
+   944→   944→ lblValidacao.setForeground(Color.RED);
+   945→   945→ } else {
+   946→   946→ txtEmail.setBorder(UIManager.getBorder("TextField.border"));
+   947→   947→ lblValidacao.setText("");
+   948→   948→ }
+   949→   949→ }
+   950→   950→ });
+   951→   951→ 
+   952→   952→Adicionar campos ao painel principal
+   953→   953→ JScrollPane scroll = novo JScrollPane(painelCampos);
+   954→   954→ scroll.setBorder(null);
+   955→   955→ add(scroll, BorderLayout.CENTER);
+   956→   956→ }
+   957→   957→ 
+   958→   958→private void adicionarCampo(JPanel painel, String label, JComponent campo, int linha) {
+   959→   959→ GridBagConstraints gbc = new GridBagConstraints();
+   960→   960→ gbc.gridx = 0;
+   961→   961→ gbc.gridy = linha;
+   962→   962→ gbc.anchor = GradeBagConstraints.EAST;
+   963→   963→ painel.add (novo JLabel (gravadora), GBC);
+   964→   964→ 
+   965→   965→gbc.gridx = 1;
+   966→   966→ GBC.weightx = 1,0;
+   967→   967→ painel.add (campo, gbc);
+   968→   968→ }
+   969→   969→ 
+   970→   970→Privado Void Salvar() {
+   971→   971→ Validar campos obrigatórios
+   972→   972→ if (!validarCampos()) {
+   973→   973→ retorno;
+   974→   974→ }
+   975→   975→ 
+   976→   976→try {
+   977→   977→ Cliente cliente = novo Cliente();
+   978→   978→ cliente.setNome(txtNome.getText());
+   979→   979→ cliente.setCpf(txtCPF.getText().replaceAll("[^0-9]", ""));
+   980→   980→ cliente.setEmail(txtEmail.getText());
+   981→   981→ // ... setar outros campos
+   982→   982→ 
+   983→   983→ClienteDAO dao = new ClienteDAO();
+   984→   984→ if (modoEdicao) {
+   985→   985→ cliente.setId(this.cliente.getId());
+   986→   986→ dao.atualizar(cliente);
+   987→   987→ JOptionPane.showMessageDialog (isto, "Cliente atualizado com sucesso!");
+   988→   988→ } else {
+   989→   989→ dao.Salvar (cliente);
+   990→   990→ JOptionPane.showMessageDialog (isto, "Cliente cadastrado com sucesso!");
+   991→   991→ }
+   992→   992→ 
+   993→   993→Voltar para lista
+   994→   994→ ((CardLayout) getParent().getLayout()).mostrar(getParent(), "LISTA");
+   995→   995→ 
+   996→   996→} captura (Exceção e) {
+   997→   997→ JOptionPane.showMessageDialogue (isto,
+   998→   998→ "Erro ao salvar cliente:\n" + e.getMessage(),
+   999→   999→ "Erro",
+  1000→  1000→ JOptionPane.ERROR_MESSAGE);
+  1001→  1001→ }
+  1002→  1002→ }
+  1003→  1003→}
+  1004→  1004→🟡 NÍVEL 2: VALIDAÇÕES E UX
+  1005→  1005→Passo 11: Validador de CPF Robusto
+  1006→  1006→Java
+  1007→  1007→classe pública ValidadorCPF {
+  1008→  1008→ 
+  1009→  1009→validar booleano estático público(String cpf) {
+  1010→  1010→ Remove caracteres não numéricos
+  1011→  1011→ cpf = cpf.replaceAll("[^0-9]", "");
+  1012→  1012→ 
+  1013→  1013→Verifica se tem 11 dígitos
+  1014→  1014→ se (cpf.length() != 11) retorna false;
+  1015→  1015→ 
+  1016→  1016→Verifica se todos são iguais (111.111.111-11)
+  1017→  1017→ se (cpf.matches("(\\d)\\1{10}")) retorna falso;
+  1018→  1018→ 
+  1019→  1019→Validação dos dígitos
+  1020→  1020→ try {
+  1021→  1021→ int[] números = novo int[11];
+  1022→  1022→ para (int i = 0; i < 11; i++) {
+  1023→  1023→ numeros[i] = Integer.parseInt(cpf.substring(i, i + 1));
+  1024→  1024→ }
+  1025→  1025→ 
+  1026→  1026→Primeiro dígito verificador
+  1027→  1027→ int soma = 0;
+  1028→  1028→ para (int i = 0; i < 9; i++) {
+  1029→  1029→ soma += números[i] * (10 - i);
+  1030→  1030→ }
+  1031→  1031→ int dígito1 = 11 - (soma % 11);
+  1032→  1032→ se (dígito1 > 9) dígito1 = 0;
+  1033→  1033→ 
+  1034→  1034→Segundo dígito verificador
+  1035→  1035→ Soma = 0;
+  1036→  1036→ para (int i = 0; i < 10; i++) {
+  1037→  1037→ soma += números[i] * (11 - i);
+  1038→  1038→ }
+  1039→  1039→ int dígito2 = 11 - (soma % 11);
+  1040→  1040→ se (dígito2 > 9) dígito2 = 0;
+  1041→  1041→ 
+  1042→  1042→números de retorno[9] == digito1 & números[10] == digito2;
+  1043→  1043→ 
+  1044→  1044→} catch (NumberFormatException e) {
+  1045→  1045→ retorne falso;
+  1046→  1046→ }
+  1047→  1047→ }
+  1048→  1048→ 
+  1049→  1049→public static String formatar(String cpf) {
+  1050→  1050→ cpf = cpf.replaceAll("[^0-9]", "");
+  1051→  1051→ se (cpf.length() != 11) retorna cpf;
+  1052→  1052→ 
+  1053→  1053→return String.format("%s.%s.%s-%s",
+  1054→  1054→ cpf.substring(0, 3),
+  1055→  1055→ cpf.substring(3, 6),
+  1056→  1056→ cpf.substring(6, 9),
+  1057→  1057→ cpf.substring(9, 11)
+  1058→  1058→ );
+  1059→  1059→ }
+  1060→  1060→}
+  1061→  1061→Passo 15: Sistema de Logs
+  1062→  1062→Java
+  1063→  1063→public class LoggerSistema {
+  1064→  1064→ 
+  1065→  1065→instância final privada de LoggerSistema = new LoggerSistema();
+  1066→  1066→ final estática privada LOG_FILE = "sistema.log";
+  1067→  1067→ escritor particular PrintWriter;
+  1068→  1068→ debug booleano privado Mode = true;
+  1069→  1069→ 
+  1070→  1070→public enum Level {
+  1071→  1071→ INFO("i️"),
+  1072→  1072→ AVISO("⚠️"),
+  1073→  1073→ ERROR("❌"),
+  1074→  1074→ DEBUG("🔍");
+  1075→  1075→ 
+  1076→  1076→emoji de String privado;
+  1077→  1077→ Level(String emoji) { this.emoji = emoji; }
+  1078→  1078→ string pública getEmoji() { return emoji; }
+  1079→  1079→ }
+  1080→  1080→ 
+  1081→  1081→private LoggerSistema() {
+  1082→  1082→ try {
+  1083→  1083→ Log com rotação - arquivo novo a cada dia
+  1084→  1084→ String dataArquivo = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+  1085→  1085→ writer = novo PrintWriter(novo FileWriter("logs/sistema_" + dataArquivo + ".log", verdadeiro));
+  1086→  1086→ 
+  1087→  1087→log(Level.INFO, "Sistema iniciado");
+  1088→  1088→ } catch (IOException e) {
+  1089→  1089→ System.err.println("Não foi possível criar arquivo de log!");
+  1090→  1090→ }
+  1091→  1091→ }
+  1092→  1092→ 
+  1093→  1093→public static LoggerSistema getInstance() {
+  1094→  1094→ return instance;
+  1095→  1095→ }
+  1096→  1096→ 
+  1097→  1097→registro público void(Level level, mensagem de corda) {
+  1098→  1098→ String log = String.format("[%s] %s %s - %s",
+  1099→  1099→ LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+  1100→  1100→ level.getEmoji(),
+  1101→  1101→ level.name(),
+  1102→  1102→ mensagem
+  1103→  1103→ );
+  1104→  1104→ 
+  1105→  1105→Console
+  1106→  1106→ System.out.println (log);
+  1107→  1107→ 
+  1108→  1108→Arquivo
+  1109→  1109→ if (writer != null) {
+  1110→  1110→ writer.println(log);
+  1111→  1111→ escritor.flush();
+  1112→  1112→ }
+  1113→  1113→ }
+  1114→  1114→ 
+  1115→  1115→public void logErro(String contexto, Throwable erro) {
+  1116→  1116→ log(Level.ERROR, contexto + ": " + erro.getMessage());
+  1117→  1117→ if (debugMode) {
+  1118→  1118→ erro.printStackTrace();
+  1119→  1119→ if (writer != null) {
+  1120→  1120→ erro.printStackTrace(escritor);
+  1121→  1121→ escritor.flush();
+  1122→  1122→ }
+  1123→  1123→ }
+  1124→  1124→ }
+  1125→  1125→ 
+  1126→  1126→public void logAcaoUsuario(String usuario, String acao, String detalhes) {
+  1127→  1127→ log(Level.INFO, String.format("[%s] %s - %s", usuario, acao, detalhes));
+  1128→  1128→ }
+  1129→  1129→ 
+  1130→  1130→Fechar o vazio público() {
+  1131→  1131→ log(Level.INFO, "Sistema finalizado");
+  1132→  1132→ if (writer != null) {
+  1133→  1133→ escritor.close();
+  1134→  1134→ }
+  1135→  1135→ }
+  1136→  1136→}
+  1137→  1137→Passo 18: Exportação Múltiplos Formatos
+  1138→  1138→Java
+  1139→  1139→classe pública ExportadorService {
+  1140→  1140→ 
+  1141→  1141→public enum Formato {
+  1142→  1142→ CSV, EXCEL, PDF, JSON
+  1143→  1143→ }
+  1144→  1144→ 
+  1145→  1145→public void exportar(List<Cliente> clientes, Formato formato, File arquivo) 
+  1146→  1146→ throws IOException {
+  1147→  1147→ Switch (formato) {
+  1148→  1148→ CSV de caso: exportarCSV(clientes, arquivo); intervalo;
+  1149→  1149→ excel de caso: exportarExcel (clientes, arquivo); intervalo;
+  1150→  1150→ caso PDF: exportarPDF(clientes, arquivo); intervalo;
+  1151→  1151→ JSON de casos: exportarJSON(clientes, arquivo); intervalo;
+  1152→  1152→ }
+  1153→  1153→ }
+  1154→  1154→ 
+  1155→  1155→private void exportarCSV(List<Cliente> clientes, File arquivo) throws IOException {
+  1156→  1156→ try (PrintWriter writer = new PrintWriter(new FileWriter(arquivo))) {
+  1157→  1157→ // BOM para UTF-8 no Excel
+  1158→  1158→ writer.print ('\uFEFF');
+  1159→  1159→ 
+  1160→  1160→Cabeçalho
+  1161→  1161→ writer.println("ID;Nome; CPF; E-mail; Telefone; Cidade; Estado; Status; Data Cadastro");
+  1162→  1162→ 
+  1163→  1163→Dados
+  1164→  1164→ for (Cliente c : clientes) {
+  1165→  1165→ writer.println(String.format("%d;%s;%s;%s;%s;%s;%s;%s;%s;%s;%s",
+  1166→  1166→ c.getId(),
+  1167→  1167→ escaparCSV(c.getNome()),
+  1168→  1168→ c.getCpf(),
+  1169→  1169→ escaparCSV(c.getEmail()),
+  1170→  1170→ c.getTelefone(),
+  1171→  1171→ escaparCSV(c.getCidade()),
+  1172→  1172→ c.getEstado(),
+  1173→  1173→ c.getStatus().getDescricao(),
+  1174→  1174→ c.getDataCadastro()
+  1175→  1175→ ));
+  1176→  1176→ }
+  1177→  1177→ }
+  1178→  1178→ }
+  1179→  1179→ 
+  1180→  1180→private String escaparCSV(String valor) {
+  1181→  1181→ se (valor == null) return "";
+  1182→  1182→ Escapa aspas duplas
+  1183→  1183→ retorne "\"" + valor.replace("\"", "\"\"") + "\"";
+  1184→  1184→ }
+  1185→  1185→ 
+  1186→  1186→private void exportarExcel(List<Cliente> clientes, File arquivo) throws IOException {
+  1187→  1187→ Caderno de exercícios = novo XSSFWorkbook();
+  1188→  1188→ Sheet sheet = workbook.createSheet("Clientes");
+  1189→  1189→ 
+  1190→  1190→Estilos
+  1191→  1191→ CellStyle cabeçalhoEstilo = criarEstiloCabecalho(workbook);
+  1192→  1192→ CellStyle dataStyle = criarEstiloData(workbook);
+  1193→  1193→ 
+  1194→  1194→Cabeçalho
+  1195→  1195→ CabeçalhoLinha = folha.createRow(0);
+  1196→  1196→ String[] cabeçalhos = {"ID", "Nome", "CPF", "Email", "Telefone", "Cidade", "Estado", "Status"};
+  1197→  1197→ for (int i = 0; i < cabeçalhos.length; i++) {
+  1198→  1198→ Célula = cabeçalhoLinha.createCell(i);
+  1199→  1199→ cell.setCellValue(cabeçalhos[i]);
+  1200→  1200→ cell.setCellStyle(cabeçalhoEstilo);
+  1201→  1201→ }
+  1202→  1202→ 
+  1203→  1203→Dados
+  1204→  1204→ int rowNum = 1;
+  1205→  1205→ for (Cliente c : clientes) {
+  1206→  1206→ Linha linha = sheet.createRow(rowNum++);
+  1207→  1207→ row.createCell(0).setCellValue(c.getId());
+  1208→  1208→ row.createCell(1).setCellValue(c.getNome());
+  1209→  1209→ row.createCell(2).setCellValue(c.getCpf());
+  1210→  1210→ row.createCell(3).setCellValue(c.getEmail());
+  1211→  1211→ row.createCell(4).setCellValue(c.getTelefone());
+  1212→  1212→ row.createCell(5).setCellValue(c.getCidade());
+  1213→  1213→ row.createCell(6).setCellValue(c.getEstado());
+  1214→  1214→ row.createCell(7).setCellValue(c.getStatus().getDescricao());
+  1215→  1215→ }
+  1216→  1216→ 
+  1217→  1217→Colunas de tamanho automático
+  1218→  1218→ for (int i = 0; i < cabeçalhos.length; i++) {
+  1219→  1219→ sheet.autoSizeColumn(i);
+  1220→  1220→ }
+  1221→  1221→ 
+  1222→  1222→Salvar
+  1223→  1223→ try (FileOutputStream fos = new FileOutputStream(arquivo)) {
+  1224→  1224→ workbook.write(fos);
+  1225→  1225→ }
+  1226→  1226→ workbook.close();
+  1227→  1227→ }
+  1228→  1228→ 
+  1229→  1229→privado CellStyle criarEstiloCabecalho (Caderno de exercícios) {
+  1230→  1230→ Estilo Celular = livro de exercícios.createCellStyle();
+  1231→  1231→ Font font = workbook.createFont();
+  1232→  1232→ font.setBold(true);
+  1233→  1233→ font.setColor(IndexedColors.WHITE.getIndex());
+  1234→  1234→ style.setFont(fonte);
+  1235→  1235→ style.setFillForegroundColor(IndexedColors.BLUE_GREY.getIndex());
+  1236→  1236→ style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+  1237→  1237→ estilo.setBorderBottom(BorderStyle.THIN);
+  1238→  1238→ estilo de retorno;
+  1239→  1239→ }
+  1240→  1240→ 
+  1241→  1241→private CellStyle criarEstiloData(Workbook workbook) {
+  1242→  1242→ Estilo Celular = livro de exercícios.createCellStyle();
+  1243→  1243→ style.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("dd/mm/yyyy hh:mm"));
+  1244→  1244→ estilo de retorno;
+  1245→  1245→ }
+  1246→  1246→}
+  1247→  1247→🔴 PRÓXIMOS NÍVEIS (RESUMO)
+  1248→  1248→Passo 21-30: Recursos Intermediários
+  1249→  1249→Sistema de backup automático
+  1250→  1250→
+  1251→  1251→Importação de CSV/Excel
+  1252→  1252→
+  1253→  1253→Histórico de alterações (auditoria)
+  1254→  1254→
+  1255→  1255→Sistema de permissões por usuário
+  1256→  1256→
+  1257→  1257→Dashboard com gráficos JFreeChart
+  1258→  1258→
+  1259→  1259→Relatórios JasperReports
+  1260→  1260→
+  1261→  1261→Envio de emails em lote
+  1262→  1262→
+  1263→  1263→Temas (modo escuro/claro)
+  1264→  1264→
+  1265→  1265→Atalhos de teclado configuráveis
+  1266→  1266→
+  1267→  1267→Internacionalização (i18n)
+  1268→  1268→
+  1269→  1269→Passo 31-40: Performance e Arquitetura
+  1270→  1270→Paginação no banco de dados
+  1271→  1271→
+  1272→  1272→Cache de consultas frequentes
+  1273→  1273→
+  1274→  1274→Pool de conexões (HikariCP)
+  1275→  1275→
+  1276→  1276→Threads para operações pesadas
+  1277→  1277→
+  1278→  1278→Migrations com Flyway
+  1279→  1279→
+  1280→  1280→Testes unitários com JUnit
+  1281→  1281→
+  1282→  1282→Logs com Log4j2
+  1283→  1283→
+  1284→  1284→Configurações externas (.properties)
+  1285→  1285→
+  1286→  1286→Tratamento global de exceções
+  1287→  1287→
+  1288→  1288→Padrão de Observador com MVC
+  1289→  1289→
+  1290→  1290→Passo 41-50: Recursos Profissionais
+  1291→  1291→Instalador do sistema
+  1292→  1292→
+  1293→  1293→Atualização automática
+  1294→  1294→
+  1295→  1295→API REST integrada
+  1296→  1296→
+  1297→  1297→Sincronização com nuvem
+  1298→  1298→
+  1299→  1299→Faça backup do Google Drive
+  1300→  1300→
+  1301→  1301→Notificações desktop
+  1302→  1302→
+  1303→  1303→Integração com WhatsApp
+  1304→  1304→
+  1305→  1305→Assinatura digital
+  1306→  1306→
+  1307→  1307→Módulo de BI
+  1308→  1308→
+  1309→  1309→Docker + Deploy
+  1310→  1310→
+  1311→  1311→🎯 EXERCÍCIO PRÁTICO AGORA
+  1312→  1312→Tarefa: Implemente estes 3 passos HOJE:
+  1313→  1313→
+  1314→  1314→Passo 8: Máscara de CEP com busca automática
+  1315→  1315→
+  1316→  1316→Java
+  1317→  1317→txtCEP.addFocusListener(new FocusAdapter() {
+  1318→  1318→ @Override
+  1319→  1319→ empty público focusLost(FocusEvent e) {
+  1320→  1320→ String cep = txtCEP.getText().replaceAll("[^0-9]", "");
+  1321→  1321→ if (cep.length() == 8) {
+  1322→  1322→ buscarEnderecoPorCEP(cep);
+  1323→  1323→ }
+  1324→  1324→ }
+  1325→  1325→});
+  1326→  1326→
+  1327→  1327→private void buscarEnderecoPorCEP(String cep) {
+  1328→  1328→ // Consome API ViaCEP
+  1329→  1329→ try {
+  1330→  1330→ URL URL = nova URL("https://viacep.com.br/ws/" + cep + "/json/");
+  1331→  1331→ HttpURLConnection con = (HttpURLConnection) url.openConnection();
+  1332→  1332→ con.setRequestMethod("GET");
+  1333→  1333→ 
+  1334→  1334→Leitor BufferedReader = novo BufferedReader(
+  1335→  1335→ novo InputStreamReader(con.getInputStream())
+  1336→  1336→ );
+  1337→  1337→ Resposta StringBuilder = novo StringBuilder();
+  1338→  1338→ Linha de cordas;
+  1339→  1339→ enquanto ((linha = leitor.readLine()) != nulo) {
+  1340→  1340→ response.append(linha);
+  1341→  1341→ }
+  1342→  1342→ leitor.fechar();
+  1343→  1343→ 
+  1344→  1344→// Parse JSON (usando org.json ou Gson)
+  1345→  1345→ JSONObject json = novo JSONObject(response.toString());
+  1346→  1346→ txtLogradouro.setText(json.getString("logradouro"));
+  1347→  1347→ txtBairro.setText(json.getString("bairro"));
+  1348→  1348→ txtCidade.setText(json.getString("localidade"));
+  1349→  1349→ cmbEstado.setSelectedItem(json.getString("uf"));
+  1350→  1350→ 
+  1351→  1351→} catch (Exceção ex) {
+  1352→  1352→ JOptionPane.showMessageDialogue (isto, 
+  1353→  1353→ "CEP não encontrado!", "Aviso", JOptionPane.WARNING_MESSAGE);
+  1354→  1354→ }
+  1355→  1355→}
+  1356→  1356→Passo 9: Foto do cliente (arrastar e soltar)
+  1357→  1357→
+  1358→  1358→Passo 10: Preview antes de salvar
+  1359→  1359→
+  1360→  1360→Quer que eu detalhe algum passo específico com código completo? Posso te dar o código de qualquer feature que te interessar mais! 🚀
