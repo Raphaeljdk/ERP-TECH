@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useErpStore, type ErpModule } from '@/store/use-erp-store'
 import { useTheme } from 'next-themes'
 import {
@@ -17,9 +18,16 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
-import { Moon, Sun, Store } from 'lucide-react'
+import { Moon, Sun, Store, Menu, Clock } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import dynamic from 'next/dynamic'
 
@@ -89,6 +97,80 @@ function ThemeToggle() {
   )
 }
 
+function FooterClock() {
+  const [time, setTime] = useState('')
+
+  useEffect(() => {
+    const update = () => {
+      setTime(
+        new Date().toLocaleString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        })
+      )
+    }
+    update()
+    const interval = setInterval(update, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <span className="flex items-center gap-1">
+      <Clock className="h-3 w-3" />
+      {time}
+    </span>
+  )
+}
+
+function MobileNavSheet() {
+  const { activeModule, setActiveModule } = useErpStore()
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="md:hidden h-8 w-8">
+          <Menu className="h-4 w-4" />
+          <span className="sr-only">Menu</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-64 p-0">
+        <SheetHeader className="px-4 py-4 border-b">
+          <SheetTitle className="flex items-center gap-2 text-left">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <Store className="h-4 w-4" />
+            </div>
+            <span className="font-bold tracking-tight">ERP System</span>
+          </SheetTitle>
+        </SheetHeader>
+        <nav className="py-2">
+          {NAV_ITEMS.map((item) => (
+            <button
+              key={item.module}
+              onClick={() => {
+                setActiveModule(item.module)
+                setOpen(false)
+              }}
+              className={`flex w-full items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
+                activeModule === item.module
+                  ? 'bg-accent text-accent-foreground font-medium'
+                  : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+              }`}
+            >
+              <item.icon />
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      </SheetContent>
+    </Sheet>
+  )
+}
+
 export default function HomePage() {
   const { activeModule, setActiveModule } = useErpStore()
 
@@ -96,11 +178,15 @@ export default function HomePage() {
     <SidebarProvider>
       <Sidebar collapsible="icon">
         <SidebarHeader className="px-4 py-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <div className="flex items-center gap-2 group/logo cursor-default">
+            <motion.div
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"
+              whileHover={{ scale: 1.08, rotate: -5 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+            >
               <Store className="h-4 w-4" />
-            </div>
-            <span className="group-data-[collapsible=icon]:hidden text-base font-bold tracking-tight">
+            </motion.div>
+            <span className="group-data-[collapsible=icon]:hidden text-base font-bold tracking-tight transition-colors group-hover/logo:text-primary">
               ERP System
             </span>
           </div>
@@ -136,7 +222,10 @@ export default function HomePage() {
 
       <SidebarInset>
         <header className="flex h-14 items-center gap-4 border-b px-4 md:px-6">
-          <SidebarTrigger />
+          <MobileNavSheet />
+          <div className="hidden md:block">
+            <SidebarTrigger />
+          </div>
           <Separator orientation="vertical" className="h-6" />
           <h1 className="text-lg font-semibold">{MODULE_TITLES[activeModule]}</h1>
           <div className="ml-auto">
@@ -144,7 +233,7 @@ export default function HomePage() {
           </div>
         </header>
 
-        <main className="flex-1 p-4 md:p-6">
+        <main className="flex-1 p-4 md:p-6 main-gradient-bg">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeModule}
@@ -159,9 +248,9 @@ export default function HomePage() {
         </main>
 
         <footer className="border-t px-4 py-3 md:px-6">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-xs text-muted-foreground">
             <span>Sistema ERP — Gestão Empresarial</span>
-            <span>v1.0.0</span>
+            <FooterClock />
           </div>
         </footer>
       </SidebarInset>

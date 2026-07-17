@@ -153,7 +153,7 @@ export default function Financeiro() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total a Receber</p>
-                <p className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-28 inline-block" /> : formatCurrency(resumo.totalReceber)}</p>
+                <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-28" /> : formatCurrency(resumo.totalReceber)}</div>
               </div>
             </div>
           </CardContent>
@@ -166,7 +166,7 @@ export default function Financeiro() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total a Pagar</p>
-                <p className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-28 inline-block" /> : formatCurrency(resumo.totalPagar)}</p>
+                <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-28" /> : formatCurrency(resumo.totalPagar)}</div>
               </div>
             </div>
           </CardContent>
@@ -179,7 +179,7 @@ export default function Financeiro() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total em Atraso</p>
-                <p className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-28 inline-block" /> : formatCurrency(resumo.totalAtraso)}</p>
+                <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-28" /> : formatCurrency(resumo.totalAtraso)}</div>
               </div>
             </div>
           </CardContent>

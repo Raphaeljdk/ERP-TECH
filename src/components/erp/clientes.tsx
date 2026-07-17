@@ -46,7 +46,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Search, Plus, Pencil, Trash2, Download } from 'lucide-react'
+import { Search, Plus, Pencil, Trash2, Download, Users, UserCheck, UserX } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { maskCPF, validateCPF, formatCPF } from '@/lib/helpers'
 
@@ -243,8 +243,52 @@ export default function Clientes() {
     }
   }
 
+  const ativos = clientes.filter((c) => c.status === 'ATIVO').length
+  const inativos = clientes.filter((c) => c.status !== 'ATIVO').length
+
+  function getInitials(name: string) {
+    return name
+      .split(' ')
+      .filter((_, i, arr) => i === 0 || i === arr.length - 1)
+      .map((w) => w[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+
   return (
     <div className="space-y-4">
+      {/* Stats Bar */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className="flex items-center gap-2 rounded-lg border bg-card p-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+            <Users className="h-4 w-4" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Total</p>
+            <p className="text-sm font-bold">{isLoading ? '—' : total}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 rounded-lg border bg-card p-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+            <UserCheck className="h-4 w-4" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Ativos</p>
+            <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{isLoading ? '—' : ativos}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 rounded-lg border bg-card p-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-400">
+            <UserX className="h-4 w-4" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Inativos</p>
+            <p className="text-sm font-bold text-amber-600 dark:text-amber-400">{isLoading ? '—' : inativos}</p>
+          </div>
+        </div>
+      </div>
+
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -299,14 +343,27 @@ export default function Clientes() {
                   : clientes.length === 0
                     ? (
                       <TableRow>
-                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                          Nenhum cliente encontrado
+                        <TableCell colSpan={6} className="py-12">
+                          <div className="flex flex-col items-center justify-center text-muted-foreground">
+                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted mb-3">
+                              <Users className="h-7 w-7 opacity-50" />
+                            </div>
+                            <p className="text-sm font-medium text-foreground">Nenhum cliente encontrado</p>
+                            <p className="text-xs mt-1">Tente ajustar os termos de busca</p>
+                          </div>
                         </TableCell>
                       </TableRow>
                     )
                     : clientes.map((c) => (
-                        <TableRow key={c.id} className="group">
-                          <TableCell className="font-medium">{c.nome}</TableCell>
+                        <TableRow key={c.id} className="group hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20">
+                          <TableCell>
+                            <div className="flex items-center gap-2.5">
+                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-semibold">
+                                {getInitials(c.nome)}
+                              </div>
+                              <span className="font-medium">{c.nome}</span>
+                            </div>
+                          </TableCell>
                           <TableCell className="font-mono text-sm">{formatCPF(c.cpf)}</TableCell>
                           <TableCell className="hidden md:table-cell">{c.telefone}</TableCell>
                           <TableCell className="hidden lg:table-cell">{c.email}</TableCell>

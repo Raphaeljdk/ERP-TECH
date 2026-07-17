@@ -45,7 +45,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Search, Plus, Pencil, Trash2 } from 'lucide-react'
+import { Search, Plus, Pencil, Trash2, Package, DollarSign, Layers } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { formatCurrency } from '@/lib/helpers'
 
@@ -205,8 +205,41 @@ export default function Produtos() {
     else createMutation.mutate(form)
   }
 
+  // Compute summary stats
+  const totalProdutos = produtos.length
+  const valorEstoque = produtos.reduce((sum, p) => sum + p.precoCusto * p.estoqueAtual, 0)
+
+  // Count products per category
+  const categoryCounts = categorias.map((cat) => ({
+    id: cat.id,
+    nome: cat.nome,
+    count: produtos.filter((p) => p.categoriaId === cat.id).length,
+  }))
+
   return (
     <div className="space-y-4">
+      {/* Summary Bar */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="flex items-center gap-2 rounded-lg border bg-card p-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+            <Layers className="h-4 w-4" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Total Produtos</p>
+            <p className="text-sm font-bold">{isLoading ? '—' : totalProdutos}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 rounded-lg border bg-card p-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+            <DollarSign className="h-4 w-4" />
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Valor em Estoque</p>
+            <p className="text-sm font-bold">{isLoading ? '—' : formatCurrency(valorEstoque)}</p>
+          </div>
+        </div>
+      </div>
+
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative flex-1 max-w-sm">
@@ -222,9 +255,19 @@ export default function Produtos() {
             <SelectTrigger className="w-44"><SelectValue placeholder="Categoria" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todas</SelectItem>
-              {categorias.map((c) => (
-                <SelectItem key={c.id} value={c.id}>{c.nome}</SelectItem>
-              ))}
+              {categorias.map((c) => {
+                const cnt = categoryCounts.find((cc) => cc.id === c.id)?.count ?? 0
+                return (
+                  <SelectItem key={c.id} value={c.id}>
+                    <span className="flex items-center gap-1.5">
+                      {c.nome}
+                      <Badge variant="secondary" className="ml-1 h-4 min-w-[20px] justify-center rounded-full px-1 text-[10px] font-semibold">
+                        {cnt}
+                      </Badge>
+                    </span>
+                  </SelectItem>
+                )
+              })}
             </SelectContent>
           </Select>
           <div className="flex items-center gap-2">
@@ -266,8 +309,14 @@ export default function Produtos() {
                   : produtos.length === 0
                     ? (
                       <TableRow>
-                        <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                          Nenhum produto encontrado
+                        <TableCell colSpan={8} className="py-12">
+                          <div className="flex flex-col items-center justify-center text-muted-foreground">
+                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted mb-3">
+                              <Package className="h-7 w-7 opacity-50" />
+                            </div>
+                            <p className="text-sm font-medium text-foreground">Nenhum produto encontrado</p>
+                            <p className="text-xs mt-1">Tente ajustar os filtros ou criar um novo produto</p>
+                          </div>
                         </TableCell>
                       </TableRow>
                     )

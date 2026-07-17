@@ -138,7 +138,7 @@ export default function Estoque() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total Produtos</p>
-                <p className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-16 inline-block" /> : resumo.totalProdutos}</p>
+                <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-16" /> : resumo.totalProdutos}</div>
               </div>
             </div>
           </CardContent>
@@ -151,7 +151,7 @@ export default function Estoque() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Itens em Estoque</p>
-                <p className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-16 inline-block" /> : resumo.itensEmEstoque}</p>
+                <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-16" /> : resumo.itensEmEstoque}</div>
               </div>
             </div>
           </CardContent>
@@ -164,7 +164,7 @@ export default function Estoque() {
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Produtos Baixo Estoque</p>
-                <p className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-16 inline-block" /> : resumo.produtosBaixoEstoque}</p>
+                <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-16" /> : resumo.produtosBaixoEstoque}</div>
               </div>
             </div>
           </CardContent>

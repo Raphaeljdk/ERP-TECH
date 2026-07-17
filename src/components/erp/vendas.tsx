@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Card,
@@ -41,7 +41,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Search, Plus, Minus, ShoppingCart, Trash2, CheckCircle2, UserCheck } from 'lucide-react'
+import { Search, Plus, Minus, ShoppingCart, Trash2, CheckCircle2, UserCheck, PackageOpen, XCircle } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { formatCurrency, formatDate } from '@/lib/helpers'
 
@@ -87,11 +87,24 @@ export default function Vendas() {
   const queryClient = useQueryClient()
   const [search, setSearch] = useState('')
   const [cart, setCart] = useState<CartItem[]>([])
+  const [highlightId, setHighlightId] = useState<string | null>(null)
   const [clienteId, setClienteId] = useState<string>('__consumidor_final__')
   const [clienteSearch, setClienteSearch] = useState('')
   const [discount, setDiscount] = useState(0)
   const [formaPagamento, setFormaPagamento] = useState('DINHEIRO')
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const cartEndRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (highlightId) {
+      const timer = setTimeout(() => setHighlightId(null), 600)
+      return () => clearTimeout(timer)
+    }
+  }, [highlightId])
+
+  useEffect(() => {
+    cartEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [cart.length])
 
   const { data: produtosData, isLoading: loadingProdutos } = useQuery({
     queryKey: ['produtos-pdv', search],
@@ -139,6 +152,7 @@ export default function Vendas() {
   })
 
   const addToCart = (produto: Produto) => {
+    setHighlightId(produto.id)
     setCart((prev) => {
       const existing = prev.find((c) => c.produto.id === produto.id)
       if (existing) {
@@ -205,12 +219,19 @@ export default function Vendas() {
                 : produtos.map((p) => (
                     <div
                       key={p.id}
-                      className="rounded-lg border p-4 hover:border-primary/50 hover:bg-accent/50 transition-colors cursor-pointer group"
+                      className={`rounded-lg border p-4 hover:border-primary/50 hover:bg-accent/50 transition-colors cursor-pointer group ${highlightId === p.id ? 'cart-item-highlight ring-1 ring-primary/30' : ''}`}
                       onClick={() => addToCart(p)}
                     >
-                      <p className="font-medium text-sm truncate">{p.nome}</p>
-                      <p className="text-xs text-muted-foreground font-mono">{p.codigo} · Estoque: {p.estoqueAtual}</p>
-                      <div className="flex items-center justify-between mt-3">
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
+                          <PackageOpen className="h-4 w-4" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm truncate">{p.nome}</p>
+                          <p className="text-xs text-muted-foreground font-mono">{p.codigo} · Estoque: {p.estoqueAtual}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between mt-3 pl-12">
                         <span className="font-semibold text-sm">{formatCurrency(p.precoVenda)}</span>
                         <Button size="sm" className="h-7 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                           <Plus className="h-3 w-3 mr-1" /> Adicionar
@@ -275,10 +296,23 @@ export default function Vendas() {
       <div className="space-y-4">
         <Card className="sticky top-4">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base flex items-center gap-2">
-              <ShoppingCart className="h-4 w-4" />
-              Carrinho ({cart.length})
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base flex items-center gap-2">
+                <ShoppingCart className="h-4 w-4" />
+                Carrinho ({cart.length})
+              </CardTitle>
+              {cart.length > 0 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 text-xs text-muted-foreground hover:text-destructive"
+                  onClick={() => { setCart([]); setDiscount(0) }}
+                >
+                  <XCircle className="h-3 w-3 mr-1" />
+                  Limpar
+                </Button>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Client selector */}
@@ -359,7 +393,15 @@ export default function Vendas() {
 
             <Separator />
 
-            {/* Totals */}
+            {/* Prominent Total Display */}
+            <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 p-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-emerald-700 dark:text-emerald-300">Total da Venda</span>
+                <span className="text-2xl font-bold text-emerald-700 dark:text-emerald-300 font-mono">{formatCurrency(grandTotal)}</span>
+              </div>
+            </div>
+
+            {/* Detailed Totals */}
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
@@ -376,11 +418,6 @@ export default function Vendas() {
                   className="w-28 h-8 text-right"
                   placeholder="0,00"
                 />
-              </div>
-              <Separator />
-              <div className="flex justify-between text-base font-bold">
-                <span>Total</span>
-                <span className="font-mono text-primary">{formatCurrency(grandTotal)}</span>
               </div>
             </div>
 
