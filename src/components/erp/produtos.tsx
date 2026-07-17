@@ -208,6 +208,9 @@ export default function Produtos() {
   // Compute summary stats
   const totalProdutos = produtos.length
   const valorEstoque = produtos.reduce((sum, p) => sum + p.precoCusto * p.estoqueAtual, 0)
+  const avgMargin = produtos.length > 0
+    ? produtos.reduce((sum, p) => sum + (p.precoVenda - p.precoCusto), 0) / produtos.length
+    : 0
 
   // Count products per category
   const categoryCounts = categorias.map((cat) => ({
@@ -236,6 +239,9 @@ export default function Produtos() {
           <div>
             <p className="text-xs text-muted-foreground">Valor em Estoque</p>
             <p className="text-sm font-bold">{isLoading ? '—' : formatCurrency(valorEstoque)}</p>
+            {!isLoading && produtos.length > 0 && (
+              <p className="text-[10px] text-muted-foreground">Margem média: {formatCurrency(avgMargin)}/un</p>
+            )}
           </div>
         </div>
       </div>

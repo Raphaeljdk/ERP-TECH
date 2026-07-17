@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import {
@@ -38,8 +39,9 @@ import {
   YAxis,
   CartesianGrid,
 } from 'recharts'
-import { TrendingUp, TrendingDown, Users, Package, AlertTriangle, DollarSign, ShoppingCart, UserPlus, PlusCircle, CalendarDays } from 'lucide-react'
-import { formatCurrency } from '@/lib/helpers'
+import { TrendingUp, TrendingDown, Users, Package, AlertTriangle, DollarSign, ShoppingCart, UserPlus, PlusCircle, CalendarDays, ArrowRight } from 'lucide-react'
+import { formatCurrency, formatDate } from '@/lib/helpers'
+import { useErpStore } from '@/store/use-erp-store'
 
 const lineChartConfig = {
   vendas: { label: 'Vendas', color: 'oklch(0.55 0.15 155)' },
@@ -65,28 +67,55 @@ const PIE_COLORS = [
   'oklch(0.85 0.08 155)',
 ]
 
+interface UltimaVenda {
+  id: string
+  numero: string
+  dataVenda: string
+  clienteNome: string
+  total: number
+  formaPagamento: string
+  status: string
+}
+
 interface DashboardData {
   vendasHoje: number
   vendasMes: number
   totalClientes: number
   produtosBaixaEstoque: number
-  vendas7Dias: { dia: string; valor: number }[]
+  vendas7Dias: { dia: string; vendas: number }[]
   topProdutos: { nome: string; quantidade: number }[]
   vendasPorPagamento: { forma: string; valor: number }[]
   produtosEstoqueBaixo: { id: string; nome: string; estoque: number; estoqueMinimo: number }[]
   numeroVendasHoje?: number
+  ultimasVendas?: UltimaVenda[]
 }
 
 function fetchDashboard(): Promise<DashboardData> {
   return fetch('/api/dashboard').then((r) => r.json())
 }
 
-const todayDate = new Date().toLocaleDateString('pt-BR', {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-})
+function useClientDate() {
+  const [todayDate, setTodayDate] = useState('')
+  const [greeting, setGreeting] = useState('')
+
+  useEffect(() => {
+    const now = new Date()
+    setTodayDate(
+      now.toLocaleDateString('pt-BR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    )
+    const hour = now.getHours()
+    if (hour < 12) setGreeting('Bom dia')
+    else if (hour < 18) setGreeting('Boa tarde')
+    else setGreeting('Boa noite')
+  }, [])
+
+  return { todayDate, greeting }
+}
 
 function TrendArrow({ direction, value }: { direction: 'up' | 'down'; value?: string }) {
   if (direction === 'up') {
@@ -159,6 +188,8 @@ function KpiCard({
 }
 
 export default function Dashboard() {
+  const { setActiveModule } = useErpStore()
+  const { todayDate, greeting } = useClientDate()
   const { data, isLoading } = useQuery({
     queryKey: ['dashboard'],
     queryFn: fetchDashboard,
@@ -174,6 +205,7 @@ export default function Dashboard() {
     vendasPorPagamento: [],
     produtosEstoqueBaixo: [],
     numeroVendasHoje: 0,
+    ultimasVendas: [],
   }
 
   const ticketMedio = d.numeroVendasHoje && d.numeroVendasHoje > 0
@@ -181,8 +213,8 @@ export default function Dashboard() {
     : 0
 
   // Simulated trend vs yesterday (using 7-day data if available)
-  const todayVal = d.vendas7Dias.length > 0 ? d.vendas7Dias[d.vendas7Dias.length - 1]?.valor : 0
-  const yesterdayVal = d.vendas7Dias.length > 1 ? d.vendas7Dias[d.vendas7Dias.length - 2]?.valor : 0
+  const todayVal = d.vendas7Dias.length > 0 ? d.vendas7Dias[d.vendas7Dias.length - 1]?.vendas : 0
+  const yesterdayVal = d.vendas7Dias.length > 1 ? d.vendas7Dias[d.vendas7Dias.length - 2]?.vendas : 0
   const todayTrend = yesterdayVal > 0
     ? ((todayVal - yesterdayVal) / yesterdayVal * 100).toFixed(1)
     : null
@@ -197,10 +229,10 @@ export default function Dashboard() {
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
       >
         <div>
-          <h2 className="text-xl font-bold tracking-tight">Bem-vindo ao Sistema ERP</h2>
+          <h2 className="text-xl font-bold tracking-tight">{greeting || 'Bem-vindo'} ao TechERP</h2>
           <p className="text-sm text-muted-foreground flex items-center gap-1.5 mt-0.5">
             <CalendarDays className="h-3.5 w-3.5" />
-            {todayDate}
+            {todayDate || 'Carregando...'}
           </p>
         </div>
       </motion.div>
@@ -212,17 +244,20 @@ export default function Dashboard() {
         transition={{ duration: 0.3, delay: 0.1 }}
         className="flex flex-wrap gap-2"
       >
-        <Button size="sm" variant="outline" className="gap-1.5">
+        <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setActiveModule('vendas')}>
           <ShoppingCart className="h-3.5 w-3.5" />
           Nova Venda
+          <ArrowRight className="h-3 w-3 opacity-50" />
         </Button>
-        <Button size="sm" variant="outline" className="gap-1.5">
+        <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setActiveModule('clientes')}>
           <UserPlus className="h-3.5 w-3.5" />
           Novo Cliente
+          <ArrowRight className="h-3 w-3 opacity-50" />
         </Button>
-        <Button size="sm" variant="outline" className="gap-1.5">
+        <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setActiveModule('produtos')}>
           <PlusCircle className="h-3.5 w-3.5" />
           Novo Produto
+          <ArrowRight className="h-3 w-3 opacity-50" />
         </Button>
       </motion.div>
 
@@ -414,6 +449,76 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Últimas Vendas */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.4 }}
+      >
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <ShoppingCart className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              Últimas Vendas
+            </CardTitle>
+            <CardDescription>5 vendas mais recentes realizadas</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <div className="space-y-3">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Skeleton key={i} className="h-10 w-full" />
+                ))}
+              </div>
+            ) : !d.ultimasVendas || d.ultimasVendas.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950 mb-3">
+                  <ShoppingCart className="h-7 w-7 text-emerald-600 dark:text-emerald-400 opacity-60" />
+                </div>
+                <p className="text-sm font-medium text-foreground">Nenhuma venda registrada</p>
+                <p className="text-xs mt-1">As vendas aparecerão aqui conforme forem realizadas</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto custom-scrollbar">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nº</TableHead>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Cliente</TableHead>
+                      <TableHead className="hidden sm:table-cell">Pagamento</TableHead>
+                      <TableHead className="text-right">Total</TableHead>
+                      <TableHead className="text-center">Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {d.ultimasVendas.map((v) => (
+                      <TableRow key={v.id}>
+                        <TableCell className="font-mono text-sm">#{v.numero}</TableCell>
+                        <TableCell className="text-sm">{formatDate(v.dataVenda)}</TableCell>
+                        <TableCell className="text-sm">{v.clienteNome}</TableCell>
+                        <TableCell className="hidden sm:table-cell">
+                          <Badge variant="outline" className="text-xs whitespace-nowrap">{v.formaPagamento}</Badge>
+                        </TableCell>
+                        <TableCell className="text-right font-mono text-sm font-medium">{formatCurrency(v.total)}</TableCell>
+                        <TableCell className="text-center">
+                          <Badge
+                            variant={v.status === 'FINALIZADA' ? 'default' : 'secondary'}
+                            className="text-xs"
+                          >
+                            {v.status === 'FINALIZADA' ? 'Finalizada' : v.status}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </motion.div>
     </div>
   )
 }

@@ -296,6 +296,7 @@ export default function Vendas() {
       <div className="space-y-4">
         <Card className="sticky top-4">
           <CardHeader className="pb-3">
+            <div className="h-1 -mt-4 -mx-6 mb-2 rounded-b-lg bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-600" />
             <div className="flex items-center justify-between">
               <CardTitle className="text-base flex items-center gap-2">
                 <ShoppingCart className="h-4 w-4" />

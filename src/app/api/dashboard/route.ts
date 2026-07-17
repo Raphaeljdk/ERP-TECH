@@ -58,7 +58,7 @@ export async function GET() {
       const daySales = vendas7DiasRaw.filter((v) => v.dataVenda.toISOString().slice(0, 10) === dateStr)
       const dayTotal = daySales.reduce((sum, v) => sum + v.total, 0)
       const dayLabel = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })
-      vendas7Dias.push({ dia: dayLabel, valor: dayTotal })
+      vendas7Dias.push({ dia: dayLabel, vendas: dayTotal })
     }
 
     // Top 5 products
@@ -97,6 +97,39 @@ export async function GET() {
       valor: item._sum.total || 0,
     }))
 
+    const numeroVendasHoje = await db.venda.count({
+      where: {
+        dataVenda: { gte: todayStart },
+        status: { not: 'CANCELADA' },
+      },
+    })
+
+    // Últimas 5 vendas
+    const ultimasVendasRaw = await db.venda.findMany({
+      where: { status: { not: 'CANCELADA' } },
+      select: {
+        id: true,
+        numero: true,
+        dataVenda: true,
+        total: true,
+        formaPagamento: true,
+        status: true,
+        cliente: { select: { nome: true } },
+      },
+      orderBy: { dataVenda: 'desc' },
+      take: 5,
+    })
+
+    const ultimasVendas = ultimasVendasRaw.map((v) => ({
+      id: v.id,
+      numero: v.numero,
+      dataVenda: v.dataVenda.toISOString(),
+      clienteNome: v.cliente?.nome || 'Consumidor Final',
+      total: v.total,
+      formaPagamento: v.formaPagamento,
+      status: v.status,
+    }))
+
     return NextResponse.json({
       vendasHoje: vendasHoje._sum.total || 0,
       vendasMes: vendasMes._sum.total || 0,
@@ -106,6 +139,8 @@ export async function GET() {
       topProdutos,
       vendasPorPagamento,
       produtosEstoqueBaixo: produtosEstoqueBaixoRaw,
+      numeroVendasHoje,
+      ultimasVendas,
     })
   } catch (error) {
     console.error('Erro ao carregar dashboard:', error)

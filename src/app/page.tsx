@@ -144,7 +144,7 @@ function MobileNavSheet() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Store className="h-4 w-4" />
             </div>
-            <span className="font-bold tracking-tight">ERP System</span>
+            <span className="font-bold tracking-tight brand-gradient-text">TechERP</span>
           </SheetTitle>
         </SheetHeader>
         <nav className="py-2">
@@ -176,6 +176,7 @@ export default function HomePage() {
 
   return (
     <SidebarProvider>
+    <div className="top-accent-border flex min-h-screen">
       <Sidebar collapsible="icon">
         <SidebarHeader className="px-4 py-4">
           <div className="flex items-center gap-2 group/logo cursor-default">
@@ -186,8 +187,8 @@ export default function HomePage() {
             >
               <Store className="h-4 w-4" />
             </motion.div>
-            <span className="group-data-[collapsible=icon]:hidden text-base font-bold tracking-tight transition-colors group-hover/logo:text-primary">
-              ERP System
+            <span className="group-data-[collapsible=icon]:hidden text-base font-bold tracking-tight brand-gradient-text">
+              TechERP
             </span>
           </div>
         </SidebarHeader>
@@ -215,12 +216,12 @@ export default function HomePage() {
         </SidebarContent>
         <SidebarFooter>
           <div className="group-data-[collapsible=icon]:hidden px-4 py-2 text-xs text-sidebar-foreground/50">
-            © 2024 ERP System v1.0
+            © 2025 TechERP v2.0 — Gestão Empresarial Inteligente
           </div>
         </SidebarFooter>
       </Sidebar>
 
-      <SidebarInset>
+      <SidebarInset className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b px-4 md:px-6">
           <MobileNavSheet />
           <div className="hidden md:block">
@@ -234,6 +235,7 @@ export default function HomePage() {
         </header>
 
         <main className="flex-1 p-4 md:p-6 main-gradient-bg">
+          <div className="mx-auto max-w-[1600px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeModule}
@@ -245,15 +247,17 @@ export default function HomePage() {
               <ModuleRenderer module={activeModule} />
             </motion.div>
           </AnimatePresence>
+          </div>
         </main>
 
         <footer className="border-t px-4 py-3 md:px-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-xs text-muted-foreground">
-            <span>Sistema ERP — Gestão Empresarial</span>
+            <span>© 2025 TechERP v2.0 — Gestão Empresarial Inteligente</span>
             <FooterClock />
           </div>
         </footer>
       </SidebarInset>
+    </div>
     </SidebarProvider>
   )
 }
