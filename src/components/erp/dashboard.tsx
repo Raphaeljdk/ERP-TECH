@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import {
@@ -95,26 +95,23 @@ function fetchDashboard(): Promise<DashboardData> {
 }
 
 function useClientDate() {
-  const [todayDate, setTodayDate] = useState('')
-  const [greeting, setGreeting] = useState('')
+  const [state, setState] = useState<{ todayDate: string; greeting: string }>({ todayDate: '', greeting: '' })
+  const initialized = useRef(false)
 
   useEffect(() => {
+    if (initialized.current) return
+    initialized.current = true
     const now = new Date()
-    setTodayDate(
-      now.toLocaleDateString('pt-BR', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    )
-    const hour = now.getHours()
-    if (hour < 12) setGreeting('Bom dia')
-    else if (hour < 18) setGreeting('Boa tarde')
-    else setGreeting('Boa noite')
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setState({
+      todayDate: now.toLocaleDateString('pt-BR', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+      }),
+      greeting: now.getHours() < 12 ? 'Bom dia' : now.getHours() < 18 ? 'Boa tarde' : 'Boa noite',
+    })
   }, [])
 
-  return { todayDate, greeting }
+  return state
 }
 
 function TrendArrow({ direction, value }: { direction: 'up' | 'down'; value?: string }) {
