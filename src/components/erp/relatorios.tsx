@@ -95,7 +95,7 @@ export default function Relatorios() {
 
   return (
     <div className="space-y-4">
-      <Card>
+      <Card className="glass-card">
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2">
             <FileBarChart2 className="h-4 w-4" />
@@ -120,16 +120,16 @@ export default function Relatorios() {
               <>
                 <div className="space-y-2">
                   <Label>Data Início</Label>
-                  <Input type="date" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} />
+                  <Input type="date" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} className="rounded-lg" />
                 </div>
                 <div className="space-y-2">
                   <Label>Data Fim</Label>
-                  <Input type="date" value={dataFim} onChange={(e) => setDataFim(e.target.value)} />
+                  <Input type="date" value={dataFim} onChange={(e) => setDataFim(e.target.value)} className="rounded-lg" />
                 </div>
               </>
             )}
             <div className="flex items-end">
-              <Button onClick={handleGenerate} className="w-full" disabled={isFetching}>
+              <Button onClick={handleGenerate} className="w-full btn-press rounded-lg" disabled={isFetching}>
                 {isFetching ? 'Gerando...' : 'Gerar Relatório'}
               </Button>
             </div>
@@ -141,7 +141,7 @@ export default function Relatorios() {
         <>
           {/* Vendas por Período */}
           {reportType === 'vendas-por-periodo' && (
-            <Card>
+            <Card className="glass-card">
               <CardHeader>
                 <CardTitle className="text-base">Vendas por Período</CardTitle>
                 <CardDescription>Total de vendas diárias no período selecionado</CardDescription>
@@ -152,7 +152,7 @@ export default function Relatorios() {
                 ) : !data?.data || data.data.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                     <FileBarChart2 className="h-10 w-10 mb-2 opacity-40" />
-                    <p className="text-sm">Nenhum dado encontrado para o período</p>
+                    <p className="text-sm font-semibold">Nenhum dado encontrado para o período</p>
                   </div>
                 ) : (
                   <ChartContainer config={lineConfig} className="h-[300px] w-full">
@@ -171,7 +171,7 @@ export default function Relatorios() {
 
           {/* Produtos Mais Vendidos */}
           {reportType === 'produtos-mais-vendidos' && (
-            <Card>
+            <Card className="glass-card">
               <CardHeader>
                 <CardTitle className="text-base">Produtos Mais Vendidos</CardTitle>
                 <CardDescription>Ranking de produtos por quantidade vendida</CardDescription>
@@ -182,7 +182,7 @@ export default function Relatorios() {
                 ) : !data?.data || data.data.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                     <FileBarChart2 className="h-10 w-10 mb-2 opacity-40" />
-                    <p className="text-sm">Nenhum dado encontrado</p>
+                    <p className="text-sm font-semibold">Nenhum dado encontrado</p>
                   </div>
                 ) : (
                   <ChartContainer config={barConfig} className="h-[300px] w-full">
@@ -201,7 +201,7 @@ export default function Relatorios() {
 
           {/* Clientes Fiéis */}
           {reportType === 'clientes-fieis' && (
-            <Card>
+            <Card className="glass-card">
               <CardHeader>
                 <CardTitle className="text-base">Clientes Fiéis</CardTitle>
                 <CardDescription>Top clientes por valor total de compras</CardDescription>
@@ -214,13 +214,13 @@ export default function Relatorios() {
                 ) : !data?.data || data.data.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                     <FileBarChart2 className="h-10 w-10 mb-2 opacity-40" />
-                    <p className="text-sm">Nenhum dado encontrado</p>
+                    <p className="text-sm font-semibold">Nenhum dado encontrado</p>
                   </div>
                 ) : (
                   <div className="max-h-96 overflow-y-auto custom-scrollbar">
                     <Table>
                       <TableHeader>
-                        <TableRow>
+                        <TableRow className="table-header-row">
                           <TableHead>#</TableHead>
                           <TableHead>Nome</TableHead>
                           <TableHead className="hidden md:table-cell">CPF</TableHead>
@@ -230,16 +230,16 @@ export default function Relatorios() {
                       </TableHeader>
                       <TableBody>
                         {data.data.map((c: { nome: string; cpf: string; numeroVendas: number; totalCompras: number }, i: number) => (
-                          <TableRow key={i}>
+                          <TableRow key={i} className="table-row-hover">
                             <TableCell>
-                              <Badge variant="outline" className="w-6 h-6 flex items-center justify-center p-0 text-xs">
+                              <Badge variant="outline" className="badge-elevated w-6 h-6 flex items-center justify-center p-0 text-xs">
                                 {i + 1}
                               </Badge>
                             </TableCell>
-                            <TableCell className="font-medium">{c.nome}</TableCell>
-                            <TableCell className="hidden md:table-cell font-mono text-sm">{c.cpf || '—'}</TableCell>
-                            <TableCell className="text-center">{c.numeroVendas}</TableCell>
-                            <TableCell className="text-right font-mono text-sm">{formatCurrency(c.totalCompras)}</TableCell>
+                            <TableCell className="font-medium text-sm">{c.nome}</TableCell>
+                            <TableCell className="hidden md:table-cell font-mono text-sm font-medium">{c.cpf || '—'}</TableCell>
+                            <TableCell className="text-center text-sm">{c.numeroVendas}</TableCell>
+                            <TableCell className="text-right font-mono text-sm font-medium">{formatCurrency(c.totalCompras)}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -252,7 +252,7 @@ export default function Relatorios() {
 
           {/* Lucratividade */}
           {reportType === 'lucratividade' && (
-            <Card>
+            <Card className="glass-card">
               <CardHeader>
                 <CardTitle className="text-base">Lucratividade por Produto</CardTitle>
                 <CardDescription>Análise de margem de lucro por produto</CardDescription>
@@ -265,13 +265,13 @@ export default function Relatorios() {
                 ) : !data?.data || data.data.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
                     <FileBarChart2 className="h-10 w-10 mb-2 opacity-40" />
-                    <p className="text-sm">Nenhum dado encontrado</p>
+                    <p className="text-sm font-semibold">Nenhum dado encontrado</p>
                   </div>
                 ) : (
                   <div className="max-h-96 overflow-y-auto custom-scrollbar">
                     <Table>
                       <TableHeader>
-                        <TableRow>
+                        <TableRow className="table-header-row">
                           <TableHead>Produto</TableHead>
                           <TableHead className="text-right hidden sm:table-cell">Preço Custo</TableHead>
                           <TableHead className="text-right hidden sm:table-cell">Preço Venda</TableHead>
@@ -282,10 +282,10 @@ export default function Relatorios() {
                       </TableHeader>
                       <TableBody>
                         {data.data.map((p: { nome: string; precoCusto: number; precoVenda: number; lucroTotal: number; margemPercentual: number; quantidadeVendida: number }, i: number) => (
-                          <TableRow key={i}>
-                            <TableCell className="font-medium">{p.nome}</TableCell>
-                            <TableCell className="text-right font-mono text-sm hidden sm:table-cell">{formatCurrency(p.precoCusto)}</TableCell>
-                            <TableCell className="text-right font-mono text-sm hidden sm:table-cell">{formatCurrency(p.precoVenda)}</TableCell>
+                          <TableRow key={i} className="table-row-hover">
+                            <TableCell className="font-medium text-sm">{p.nome}</TableCell>
+                            <TableCell className="text-right font-mono text-sm font-medium hidden sm:table-cell">{formatCurrency(p.precoCusto)}</TableCell>
+                            <TableCell className="text-right font-mono text-sm font-medium hidden sm:table-cell">{formatCurrency(p.precoVenda)}</TableCell>
                             <TableCell className={`text-right font-mono text-sm font-medium ${p.lucroTotal >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
                               {formatCurrency(p.lucroTotal)}
                             </TableCell>
@@ -294,7 +294,7 @@ export default function Relatorios() {
                                 {p.margemPercentual.toFixed(1)}%
                               </span>
                             </TableCell>
-                            <TableCell className="text-center font-mono text-sm hidden md:table-cell">{p.quantidadeVendida}</TableCell>
+                            <TableCell className="text-center font-mono text-sm font-medium hidden md:table-cell">{p.quantidadeVendida}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>

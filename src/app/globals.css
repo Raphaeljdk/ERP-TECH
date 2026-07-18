@@ -45,71 +45,89 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(0.99 0.002 155);
-  --foreground: oklch(0.175 0.02 155);
+  --background: oklch(0.985 0.002 155);
+  --foreground: oklch(0.13 0.028 155);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.175 0.02 155);
+  --card-foreground: oklch(0.13 0.028 155);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.175 0.02 155);
-  --primary: oklch(0.55 0.15 155);
+  --popover-foreground: oklch(0.13 0.028 155);
+  --primary: oklch(0.52 0.16 155);
   --primary-foreground: oklch(0.99 0.002 155);
-  --secondary: oklch(0.96 0.015 155);
-  --secondary-foreground: oklch(0.25 0.03 155);
-  --muted: oklch(0.96 0.01 155);
-  --muted-foreground: oklch(0.50 0.02 155);
-  --accent: oklch(0.94 0.03 155);
-  --accent-foreground: oklch(0.25 0.03 155);
+  --secondary: oklch(0.955 0.014 155);
+  --secondary-foreground: oklch(0.22 0.03 155);
+  --muted: oklch(0.955 0.008 155);
+  --muted-foreground: oklch(0.45 0.02 155);
+  --accent: oklch(0.935 0.025 155);
+  --accent-foreground: oklch(0.22 0.03 155);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.91 0.015 155);
-  --input: oklch(0.91 0.015 155);
-  --ring: oklch(0.55 0.15 155);
-  --chart-1: oklch(0.55 0.15 155);
-  --chart-2: oklch(0.65 0.15 145);
-  --chart-3: oklch(0.75 0.12 160);
-  --chart-4: oklch(0.45 0.18 150);
-  --chart-5: oklch(0.85 0.08 155);
+  --border: oklch(0.905 0.012 155);
+  --input: oklch(0.905 0.012 155);
+  --ring: oklch(0.52 0.16 155);
+  --chart-1: oklch(0.52 0.16 155);
+  --chart-2: oklch(0.62 0.16 145);
+  --chart-3: oklch(0.72 0.13 160);
+  --chart-4: oklch(0.42 0.19 150);
+  --chart-5: oklch(0.82 0.08 155);
   --sidebar: oklch(0.175 0.03 155);
   --sidebar-foreground: oklch(0.94 0.01 155);
-  --sidebar-primary: oklch(0.65 0.15 155);
+  --sidebar-primary: oklch(0.62 0.16 155);
   --sidebar-primary-foreground: oklch(0.99 0.002 155);
   --sidebar-accent: oklch(0.25 0.04 155);
   --sidebar-accent-foreground: oklch(0.94 0.01 155);
   --sidebar-border: oklch(0.30 0.03 155);
-  --sidebar-ring: oklch(0.55 0.15 155);
+  --sidebar-ring: oklch(0.52 0.16 155);
+  /* Senior: Shadows with depth */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+  --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-card: 0 0 0 1px rgb(0 0 0 / 0.03), 0 2px 8px rgb(0 0 0 / 0.04), 0 1px 2px rgb(0 0 0 / 0.02);
+  --shadow-elevated: 0 0 0 1px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.08), 0 2px 8px rgb(0 0 0 / 0.04);
+  --shadow-modal: 0 0 0 1px rgb(0 0 0 / 0.05), 0 24px 48px rgb(0 0 0 / 0.12), 0 4px 16px rgb(0 0 0 / 0.06);
+  /* Glow effects */
+  --glow-primary: 0 0 20px oklch(0.52 0.16 155 / 20%);
+  --glow-success: 0 0 20px oklch(0.65 0.2 145 / 20%);
 }
 
 .dark {
-  --background: oklch(0.145 0.015 155);
-  --foreground: oklch(0.94 0.01 155);
-  --card: oklch(0.195 0.02 155);
-  --card-foreground: oklch(0.94 0.01 155);
-  --popover: oklch(0.195 0.02 155);
-  --popover-foreground: oklch(0.94 0.01 155);
-  --primary: oklch(0.65 0.15 155);
+  --background: oklch(0.13 0.012 155);
+  --foreground: oklch(0.955 0.008 155);
+  --card: oklch(0.17 0.016 155);
+  --card-foreground: oklch(0.955 0.008 155);
+  --popover: oklch(0.17 0.016 155);
+  --popover-foreground: oklch(0.955 0.008 155);
+  --primary: oklch(0.65 0.16 155);
   --primary-foreground: oklch(0.12 0.02 155);
-  --secondary: oklch(0.24 0.025 155);
-  --secondary-foreground: oklch(0.94 0.01 155);
-  --muted: oklch(0.24 0.025 155);
-  --muted-foreground: oklch(0.65 0.02 155);
-  --accent: oklch(0.24 0.025 155);
-  --accent-foreground: oklch(0.94 0.01 155);
+  --secondary: oklch(0.22 0.02 155);
+  --secondary-foreground: oklch(0.955 0.008 155);
+  --muted: oklch(0.22 0.018 155);
+  --muted-foreground: oklch(0.62 0.015 155);
+  --accent: oklch(0.22 0.022 155);
+  --accent-foreground: oklch(0.955 0.008 155);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.65 0.15 155);
-  --chart-1: oklch(0.65 0.15 155);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.65 0.16 155);
+  --chart-1: oklch(0.65 0.16 155);
   --chart-2: oklch(0.55 0.17 145);
   --chart-3: oklch(0.75 0.12 160);
   --chart-4: oklch(0.45 0.18 150);
   --chart-5: oklch(0.85 0.08 155);
-  --sidebar: oklch(0.17 0.025 155);
+  --sidebar: oklch(0.15 0.02 155);
   --sidebar-foreground: oklch(0.94 0.01 155);
-  --sidebar-primary: oklch(0.65 0.15 155);
+  --sidebar-primary: oklch(0.65 0.16 155);
   --sidebar-primary-foreground: oklch(0.12 0.02 155);
-  --sidebar-accent: oklch(0.25 0.035 155);
+  --sidebar-accent: oklch(0.24 0.03 155);
   --sidebar-accent-foreground: oklch(0.94 0.01 155);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.65 0.15 155);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.65 0.16 155);
+  /* Senior: Dark shadows */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+  --shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.25), 0 1px 2px -1px rgb(0 0 0 / 0.2);
+  --shadow-card: 0 0 0 1px rgb(255 255 255 / 4%), 0 2px 8px rgb(0 0 0 / 0.3), 0 1px 2px rgb(0 0 0 / 0.2);
+  --shadow-elevated: 0 0 0 1px rgb(255 255 255 / 5%), 0 8px 24px rgb(0 0 0 / 0.4), 0 2px 8px rgb(0 0 0 / 0.25);
+  --shadow-modal: 0 0 0 1px rgb(255 255 255 / 5%), 0 24px 48px rgb(0 0 0 / 0.5), 0 4px 16px rgb(0 0 0 / 0.3);
+  /* Glow effects */
+  --glow-primary: 0 0 24px oklch(0.65 0.16 155 / 15%);
+  --glow-success: 0 0 24px oklch(0.65 0.2 145 / 15%);
 }
 
 @layer base {
@@ -118,55 +136,397 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+/* ========================================
+   SENIOR-LEVEL: Typography System
+   ======================================== */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
-/* Custom scrollbar - thin emerald accent */
-.custom-scrollbar::-webkit-scrollbar {
+p, span, td, th, li {
+  line-height: 1.5;
+}
+
+/* ========================================
+   SENIOR-LEVEL: Scrollbar System
+   ======================================== */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.7 0.06 155 / 25%) transparent;
+}
+
+*::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: oklch(0.65 0.1 155 / 30%);
+*::-webkit-scrollbar-thumb {
+  background: oklch(0.7 0.06 155 / 25%);
   border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.55 0.12 155 / 55%);
+*::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.6 0.08 155 / 45%);
+  background-clip: padding-box;
 }
 
-/* Firefox scrollbar support */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: oklch(0.65 0.1 155 / 30%) transparent;
+.dark *::-webkit-scrollbar-thumb {
+  background: oklch(0.6 0.06 155 / 25%);
+  background-clip: padding-box;
 }
 
-/* Better focus ring styles */
+.dark *::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.55 0.08 155 / 40%);
+  background-clip: padding-box;
+}
+
+.dark * {
+  scrollbar-color: oklch(0.6 0.06 155 / 25%) transparent;
+}
+
+/* ========================================
+   SENIOR-LEVEL: Focus Ring
+   ======================================== */
 *:focus-visible {
-  outline: 2px solid oklch(0.55 0.15 155);
+  outline: 2px solid oklch(0.52 0.16 155);
   outline-offset: 2px;
   border-radius: 6px;
 }
 
-/* Smooth transition on interactive elements */
-button, a, input, select, textarea, [role="button"] {
-  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+.dark *:focus-visible {
+  outline-color: oklch(0.65 0.16 155);
 }
 
-/* Top accent gradient border */
+/* ========================================
+   SENIOR-LEVEL: Interactive Elements
+   ======================================== */
+button, a, [role="button"] {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+input, select, textarea {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* ========================================
+   SENIOR-LEVEL: Glassmorphism Cards
+   ======================================== */
+.glass-card {
+  background: oklch(1 0 0 / 70%);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid oklch(0.9 0.01 155 / 60%);
+  box-shadow: var(--shadow-card);
+}
+
+.dark .glass-card {
+  background: oklch(0.17 0.016 155 / 70%);
+  border: 1px solid oklch(1 0 0 / 6%);
+}
+
+.glass-card-elevated {
+  background: oklch(1 0 0 / 80%);
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid oklch(0.9 0.01 155 / 70%);
+  box-shadow: var(--shadow-elevated);
+}
+
+.dark .glass-card-elevated {
+  background: oklch(0.17 0.016 155 / 80%);
+  border: 1px solid oklch(1 0 0 / 8%);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Subtle Background Pattern
+   ======================================== */
+.main-gradient-bg {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 10% -10%, oklch(0.52 0.16 155 / 5%) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 90% 110%, oklch(0.62 0.14 145 / 4%) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+.dark .main-gradient-bg {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 10% -10%, oklch(0.65 0.16 155 / 6%) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 90% 110%, oklch(0.55 0.17 145 / 5%) 0%, transparent 50%);
+}
+
+/* ========================================
+   SENIOR-LEVEL: KPI Cards
+   ======================================== */
+.kpi-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-elevated);
+}
+
+.kpi-border-emerald {
+  border-left: 3px solid oklch(0.52 0.16 155);
+}
+
+.kpi-border-amber {
+  border-left: 3px solid oklch(0.75 0.15 75);
+}
+
+.kpi-border-red {
+  border-left: 3px solid oklch(0.577 0.245 27.325);
+}
+
+/* KPI background glow */
+.kpi-glow-emerald::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, oklch(0.52 0.16 155 / 12%) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dark .kpi-glow-emerald::after {
+  background: radial-gradient(circle, oklch(0.65 0.16 155 / 10%) 0%, transparent 70%);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Sidebar
+   ======================================== */
+.sidebar-glass {
+  background: oklch(0.175 0.03 155 / 95%);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border-right: 1px solid oklch(1 0 0 / 5%);
+}
+
+.dark .sidebar-glass {
+  background: oklch(0.12 0.015 155 / 95%);
+  border-right: 1px solid oklch(1 0 0 / 4%);
+}
+
+/* Active nav item animated background */
+.nav-item-active {
+  background: oklch(0.52 0.16 155 / 10%);
+  color: oklch(0.52 0.16 155);
+  font-weight: 600;
+  position: relative;
+}
+
+.dark .nav-item-active {
+  background: oklch(0.65 0.16 155 / 12%);
+  color: oklch(0.65 0.16 155);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Table Polish
+   ======================================== */
+.table-header-row th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: oklch(0.45 0.02 155);
+}
+
+.dark .table-header-row th {
+  color: oklch(0.62 0.015 155);
+}
+
+.table-row-hover {
+  transition: background-color 0.1s ease;
+}
+
+.table-row-hover:hover {
+  background: oklch(0.52 0.16 155 / 4%);
+}
+
+.dark .table-row-hover:hover {
+  background: oklch(0.65 0.16 155 / 6%);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Cart Item Animation
+   ======================================== */
+@keyframes cart-highlight {
+  0% { background-color: color-mix(in oklch, var(--primary) 15%, transparent); transform: scale(1.01); }
+  100% { background-color: transparent; transform: scale(1); }
+}
+
+.cart-item-highlight {
+  animation: cart-highlight 0.6s ease-out;
+}
+
+/* ========================================
+   SENIOR-LEVEL: Badge Enhancements
+   ======================================== */
+.badge-elevated {
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.dark .badge-elevated {
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Button Effects
+   ======================================== */
+.btn-glow:hover {
+  box-shadow: var(--glow-primary);
+}
+
+.btn-press:active {
+  transform: scale(0.97);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Gradient Accents
+   ======================================== */
+.gradient-text {
+  background: linear-gradient(135deg, oklch(0.52 0.16 155), oklch(0.62 0.14 145));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-border-bottom {
+  position: relative;
+}
+
+.gradient-border-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, oklch(0.52 0.16 155 / 30%), transparent);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Selection
+   ======================================== */
+::selection {
+  background: oklch(0.52 0.16 155 / 20%);
+  color: oklch(0.13 0.028 155);
+}
+
+.dark ::selection {
+  background: oklch(0.65 0.16 155 / 25%);
+  color: oklch(0.955 0.008 155);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Smooth Page Scroll
+   ======================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ========================================
+   SENIOR-LEVEL: Stat Card Hover
+   ======================================== */
+.stat-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-elevated);
+  border-color: oklch(0.52 0.16 155 / 20%);
+}
+
+.dark .stat-card:hover {
+  border-color: oklch(0.65 0.16 155 / 20%);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Theme Toggle Animation
+   ======================================== */
+@keyframes theme-rotate {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(0.8); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.theme-icon-enter {
+  animation: theme-rotate 0.4s ease-in-out;
+}
+
+/* ========================================
+   SENIOR-LEVEL: Product Card in Vendas
+   ======================================== */
+.product-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-soft);
+  border-color: oklch(0.52 0.16 155 / 30%);
+}
+
+.dark .product-card:hover {
+  border-color: oklch(0.65 0.16 155 / 25%);
+}
+
+/* ========================================
+   SENIOR-LEVEL: Shimmer Loading
+   ======================================== */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(0.955 0.008 155 / 0%) 0%,
+    oklch(0.955 0.008 155 / 40%) 50%,
+    oklch(0.955 0.008 155 / 0%) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.dark .shimmer {
+  background: linear-gradient(
+    90deg,
+    oklch(1 0 0 / 0%) 0%,
+    oklch(1 0 0 / 8%) 50%,
+    oklch(1 0 0 / 0%) 100%
+  );
+  background-size: 200% 100%;
+}
+
+/* ========================================
+   SENIOR-LEVEL: Top Accent Line
+   ======================================== */
 .top-accent-border {
   position: relative;
 }
+
 .top-accent-border::before {
   content: '';
   position: absolute;
@@ -174,37 +534,7 @@ button, a, input, select, textarea, [role="button"] {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, oklch(0.55 0.15 155), oklch(0.65 0.15 145), oklch(0.75 0.12 160));
+  background: linear-gradient(90deg, oklch(0.52 0.16 155), oklch(0.62 0.14 145), oklch(0.72 0.12 160));
   z-index: 50;
+  border-radius: 0 0 2px 2px;
 }
-
-/* Gradient text for branding */
-.brand-gradient-text {
-  background: linear-gradient(135deg, oklch(0.55 0.15 155), oklch(0.65 0.15 145));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Subtle gradient background pattern for main content */
-.main-gradient-bg {
-  background-image:
-    radial-gradient(ellipse 80% 60% at 20% 0%, oklch(0.55 0.15 155 / 4%) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 100%, oklch(0.65 0.12 155 / 3%) 0%, transparent 60%);
-  background-attachment: fixed;
-}
-
-/* Cart item highlight animation */
-@keyframes cart-highlight {
-  0% { background-color: oklch(0.55 0.15 155 / 15%); }
-  100% { background-color: transparent; }
-}
-
-.cart-item-highlight {
-  animation: cart-highlight 0.6s ease-out;
-}
-
-/* KPI left border accent */
-.kpi-border-emerald { border-left: 3px solid oklch(0.55 0.15 155); }
-.kpi-border-amber { border-left: 3px solid oklch(0.75 0.15 75); }
-.kpi-border-red { border-left: 3px solid oklch(0.577 0.245 27.325); }

@@ -223,22 +223,22 @@ export default function Produtos() {
     <div className="space-y-4">
       {/* Summary Bar */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="flex items-center gap-2 rounded-lg border bg-card p-3">
+        <div className="flex items-center gap-2 glass-card stat-card p-4">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
             <Layers className="h-4 w-4" />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground">Total Produtos</p>
-            <p className="text-sm font-bold">{isLoading ? '—' : totalProdutos}</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Produtos</p>
+            <p className="font-mono text-sm font-medium">{isLoading ? '—' : totalProdutos}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 rounded-lg border bg-card p-3">
+        <div className="flex items-center gap-2 glass-card stat-card p-4">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
             <DollarSign className="h-4 w-4" />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground">Valor em Estoque</p>
-            <p className="text-sm font-bold">{isLoading ? '—' : formatCurrency(valorEstoque)}</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Valor em Estoque</p>
+            <p className="font-mono text-sm font-medium">{isLoading ? '—' : formatCurrency(valorEstoque)}</p>
             {!isLoading && produtos.length > 0 && (
               <p className="text-[10px] text-muted-foreground">Margem média: {formatCurrency(avgMargin)}/un</p>
             )}
@@ -254,7 +254,7 @@ export default function Produtos() {
               placeholder="Buscar por nome ou código..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
+              className="pl-9 rounded-lg"
             />
           </div>
           <Select value={categoria} onValueChange={setCategoria}>
@@ -267,7 +267,7 @@ export default function Produtos() {
                   <SelectItem key={c.id} value={c.id}>
                     <span className="flex items-center gap-1.5">
                       {c.nome}
-                      <Badge variant="secondary" className="ml-1 h-4 min-w-[20px] justify-center rounded-full px-1 text-[10px] font-semibold">
+                      <Badge variant="secondary" className="badge-elevated ml-1 h-4 min-w-[20px] justify-center rounded-full px-1 text-[10px] font-semibold">
                         {cnt}
                       </Badge>
                     </span>
@@ -281,7 +281,7 @@ export default function Produtos() {
             <Label htmlFor="lowstock" className="text-sm whitespace-nowrap">Estoque baixo</Label>
           </div>
         </div>
-        <Button size="sm" onClick={openNew}>
+        <Button size="sm" onClick={openNew} className="btn-press rounded-lg">
           <Plus className="mr-2 h-4 w-4" />
           Novo Produto
         </Button>
@@ -292,7 +292,7 @@ export default function Produtos() {
           <div className="max-h-[calc(100vh-320px)] min-h-[300px] overflow-y-auto custom-scrollbar">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="table-header-row">
                   <TableHead>Código</TableHead>
                   <TableHead>Nome</TableHead>
                   <TableHead className="hidden md:table-cell">Categoria</TableHead>
@@ -306,7 +306,7 @@ export default function Produtos() {
               <TableBody>
                 {isLoading
                   ? Array.from({ length: 5 }).map((_, i) => (
-                      <TableRow key={i}>
+                      <TableRow key={i} className="table-row-hover">
                         {Array.from({ length: 8 }).map((_, j) => (
                           <TableCell key={j}><Skeleton className="h-4 w-20" /></TableCell>
                         ))}
@@ -317,23 +317,23 @@ export default function Produtos() {
                       <TableRow>
                         <TableCell colSpan={8} className="py-12">
                           <div className="flex flex-col items-center justify-center text-muted-foreground">
-                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted mb-3">
+                            <div className="flex h-14 w-14 items-center justify-center rounded-full glass-card mb-3">
                               <Package className="h-7 w-7 opacity-50" />
                             </div>
-                            <p className="text-sm font-medium text-foreground">Nenhum produto encontrado</p>
+                            <p className="text-sm font-semibold text-foreground">Nenhum produto encontrado</p>
                             <p className="text-xs mt-1">Tente ajustar os filtros ou criar um novo produto</p>
                           </div>
                         </TableCell>
                       </TableRow>
                     )
                     : produtos.map((p) => (
-                        <TableRow key={p.id} className="group">
-                          <TableCell className="font-mono text-sm">{p.codigo}</TableCell>
-                          <TableCell className="font-medium">{p.nome}</TableCell>
-                          <TableCell className="hidden md:table-cell">{p.categoria?.nome || '—'}</TableCell>
-                          <TableCell className="hidden lg:table-cell text-right font-mono text-sm">{formatCurrency(p.precoCusto)}</TableCell>
-                          <TableCell className="text-right font-mono text-sm">{formatCurrency(p.precoVenda)}</TableCell>
-                          <TableCell className="text-center">
+                        <TableRow key={p.id} className="group table-row-hover">
+                          <TableCell className="font-mono text-sm font-medium">{p.codigo}</TableCell>
+                          <TableCell className="text-sm font-medium">{p.nome}</TableCell>
+                          <TableCell className="hidden md:table-cell text-sm">{p.categoria?.nome || '—'}</TableCell>
+                          <TableCell className="hidden lg:table-cell text-right font-mono text-sm font-medium">{formatCurrency(p.precoCusto)}</TableCell>
+                          <TableCell className="text-right font-mono text-sm font-medium">{formatCurrency(p.precoVenda)}</TableCell>
+                          <TableCell className="text-center text-sm">
                             <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
                               p.estoqueAtual > p.estoqueMinimo
                                 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400'
@@ -343,17 +343,17 @@ export default function Produtos() {
                             </span>
                           </TableCell>
                           <TableCell>
-                            <Badge variant={p.status === 'ATIVO' ? 'default' : 'secondary'} className="text-xs">
+                            <Badge variant={p.status === 'ATIVO' ? 'default' : 'secondary'} className="badge-elevated text-xs">
                               {p.status === 'ATIVO' ? 'Ativo' : 'Inativo'}
                             </Badge>
                           </TableCell>
-                          <TableCell className="text-right">
+                          <TableCell className="text-right text-sm">
                             <div className="flex items-center justify-end gap-1">
-                              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(p)}>
+                              <Button variant="ghost" size="icon" className="btn-press rounded-lg h-8 w-8" onClick={() => openEdit(p)}>
                                 <Pencil className="h-3.5 w-3.5" />
                               </Button>
                               <Button
-                                variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-600"
+                                variant="ghost" size="icon" className="btn-press rounded-lg h-8 w-8 text-red-500 hover:text-red-600"
                                 onClick={() => { setDeletingId(p.id); setDeleteOpen(true) }}
                                 disabled={p.status !== 'ATIVO'}
                               >
@@ -439,8 +439,8 @@ export default function Produtos() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => { setDialogOpen(false); resetForm() }}>Cancelar</Button>
-            <Button onClick={handleSubmit} disabled={createMutation.isPending || updateMutation.isPending}>
+            <Button variant="outline" onClick={() => { setDialogOpen(false); resetForm() }} className="btn-press rounded-lg">Cancelar</Button>
+            <Button onClick={handleSubmit} disabled={createMutation.isPending || updateMutation.isPending} className="btn-press rounded-lg">
               {editing ? 'Salvar' : 'Criar'}
             </Button>
           </DialogFooter>
@@ -458,7 +458,7 @@ export default function Produtos() {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="btn-press rounded-lg bg-red-600 hover:bg-red-700 text-white"
               onClick={() => deletingId && deleteMutation.mutate(deletingId)}
             >
               Desativar

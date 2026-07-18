@@ -130,40 +130,40 @@ export default function Estoque() {
     <div className="space-y-4">
       {/* Summary Cards */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card>
+        <Card className="glass-card stat-card">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
                 <Package className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total Produtos</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Produtos</p>
                 <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-16" /> : resumo.totalProdutos}</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="glass-card stat-card">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
                 <Warehouse className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Itens em Estoque</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Itens em Estoque</p>
                 <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-16" /> : resumo.itensEmEstoque}</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="glass-card stat-card">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-400">
                 <AlertTriangle className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Produtos Baixo Estoque</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Produtos Baixo Estoque</p>
                 <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-16" /> : resumo.produtosBaixoEstoque}</div>
               </div>
             </div>
@@ -185,18 +185,18 @@ export default function Estoque() {
             </SelectContent>
           </Select>
         </div>
-        <Button size="sm" onClick={() => setDialogOpen(true)}>
+        <Button size="sm" onClick={() => setDialogOpen(true)} className="btn-press rounded-lg">
           <Plus className="mr-2 h-4 w-4" />
           Nova Movimentação
         </Button>
       </div>
 
-      <Card>
+      <Card className="glass-card">
         <CardContent className="p-0">
           <div className="max-h-[calc(100vh-380px)] min-h-[300px] overflow-y-auto custom-scrollbar">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="table-header-row">
                   <TableHead>Data</TableHead>
                   <TableHead>Produto</TableHead>
                   <TableHead>Tipo</TableHead>
@@ -219,26 +219,26 @@ export default function Estoque() {
                     ? (
                       <TableRow>
                         <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                          Nenhuma movimentação encontrada
+                          <span className="font-semibold">Nenhuma movimentação encontrada</span>
                         </TableCell>
                       </TableRow>
                     )
                     : movimentacoes.map((m) => (
-                        <TableRow key={m.id}>
+                        <TableRow key={m.id} className="table-row-hover">
                           <TableCell className="text-sm">{formatDate(m.createdAt)}</TableCell>
-                          <TableCell className="font-medium">{m.produto?.nome || '—'}</TableCell>
+                          <TableCell className="font-medium text-sm">{m.produto?.nome || '—'}</TableCell>
                           <TableCell>
                             <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${TIPO_STYLES[m.tipo] || ''}`}>
                               {TIPO_LABELS[m.tipo]}
                             </span>
                           </TableCell>
-                          <TableCell className="text-center font-mono">
+                          <TableCell className="text-center font-mono text-sm font-medium">
                             <span className={m.tipo === 'SAIDA' ? 'text-red-500' : 'text-emerald-600'}>
                               {m.tipo === 'SAIDA' ? '-' : '+'}{m.quantidade}
                             </span>
                           </TableCell>
-                          <TableCell className="text-center font-mono hidden sm:table-cell">{m.estoqueAntes}</TableCell>
-                          <TableCell className="text-center font-mono hidden sm:table-cell">{m.estoqueDepois}</TableCell>
+                          <TableCell className="text-center font-mono text-sm font-medium hidden sm:table-cell">{m.estoqueAntes}</TableCell>
+                          <TableCell className="text-center font-mono text-sm font-medium hidden sm:table-cell">{m.estoqueDepois}</TableCell>
                           <TableCell className="hidden md:table-cell text-sm text-muted-foreground">{m.motivo || '—'}</TableCell>
                         </TableRow>
                       ))}
@@ -280,16 +280,16 @@ export default function Estoque() {
             </div>
             <div className="space-y-2">
               <Label>Quantidade</Label>
-              <Input type="number" min={1} value={form.quantidade} onChange={(e) => setForm(f => ({ ...f, quantidade: parseInt(e.target.value) || 0 }))} />
+              <Input type="number" min={1} value={form.quantidade} onChange={(e) => setForm(f => ({ ...f, quantidade: parseInt(e.target.value) || 0 }))} className="rounded-lg" />
             </div>
             <div className="space-y-2">
               <Label>Motivo</Label>
-              <Input value={form.motivo} onChange={(e) => setForm(f => ({ ...f, motivo: e.target.value }))} placeholder="Motivo da movimentação" />
+              <Input value={form.motivo} onChange={(e) => setForm(f => ({ ...f, motivo: e.target.value }))} placeholder="Motivo da movimentação" className="rounded-lg" />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancelar</Button>
-            <Button onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !form.produtoId || form.quantidade <= 0}>
+            <Button variant="outline" onClick={() => setDialogOpen(false)} className="btn-press">Cancelar</Button>
+            <Button onClick={() => createMutation.mutate()} disabled={createMutation.isPending || !form.produtoId || form.quantidade <= 0} className="btn-press rounded-lg">
               Registrar
             </Button>
           </DialogFooter>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useSyncExternalStore } from 'react'
+import { useSyncExternalStore } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useErpStore, type ErpModule } from '@/store/use-erp-store'
 import Dashboard from '@/components/erp/dashboard'
@@ -48,7 +48,7 @@ function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; onNavig
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5">
-        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-primary-foreground shrink-0">
+        <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-primary-foreground shrink-0 shadow-md shadow-primary/20">
           <Zap className="w-5 h-5" />
         </div>
         {!collapsed && (
@@ -58,51 +58,52 @@ function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; onNavig
             exit={{ opacity: 0, width: 0 }}
             className="overflow-hidden"
           >
-            <h1 className="text-lg font-bold tracking-tight whitespace-nowrap">TechERP</h1>
-            <p className="text-[10px] text-muted-foreground whitespace-nowrap">Sistema de Gestão</p>
+            <h1 className="text-lg font-bold tracking-tight whitespace-nowrap gradient-text">TechERP</h1>
+            <p className="text-[10px] text-muted-foreground/70 whitespace-nowrap font-medium tracking-wide uppercase">Gestão Empresarial</p>
           </motion.div>
         )}
       </div>
 
-      <Separator />
+      <Separator className="opacity-60" />
 
       {/* Navigation */}
-      <ScrollArea className="flex-1 px-3 py-4">
-        <nav className="flex flex-col gap-1">
+      <ScrollArea className="flex-1 px-3 py-3">
+        <nav className="flex flex-col gap-0.5">
           {modules.map((mod) => {
             const isActive = activeModule === mod.key
             const Icon = mod.icon
             return (
-              <Tooltip key={mod.key} delayDuration={collapsed ? 0 : 300}>
+              <Tooltip key={mod.key} delayDuration={collapsed ? 0 : 400}>
                 <TooltipTrigger asChild>
                   <Button
-                    variant={isActive ? 'secondary' : 'ghost'}
-                    className={`w-full justify-start gap-3 h-10 px-3 font-medium transition-all ${
+                    variant="ghost"
+                    className={`w-full justify-start gap-3 h-10 px-3 rounded-lg transition-all duration-150 ${
                       isActive
-                        ? 'bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary'
-                        : 'text-muted-foreground hover:text-foreground'
+                        ? 'nav-item-active shadow-sm'
+                        : 'text-muted-foreground/80 hover:text-foreground hover:bg-white/5 dark:hover:bg-white/5'
                     }`}
                     onClick={() => {
                       setActiveModule(mod.key)
                       onNavigate?.()
                     }}
                   >
-                    <Icon className="w-4 h-4 shrink-0" />
+                    <Icon className={`w-[18px] h-[18px] shrink-0 ${isActive ? 'text-primary' : ''}`} />
                     {!collapsed && (
-                      <span className="truncate">{mod.label}</span>
+                      <span className="text-[13px]">{mod.label}</span>
                     )}
                     {!collapsed && isActive && (
                       <motion.div
-                        layoutId="activeIndicator"
+                        layoutId="sidebar-active-dot"
                         className="ml-auto w-1.5 h-1.5 rounded-full bg-primary"
+                        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                       />
                     )}
                   </Button>
                 </TooltipTrigger>
                 {collapsed && (
-                  <TooltipContent side="right" sideOffset={8}>
-                    <p className="font-medium">{mod.label}</p>
-                    <p className="text-xs text-muted-foreground">{mod.description}</p>
+                  <TooltipContent side="right" sideOffset={10} className="text-xs">
+                    <p className="font-semibold">{mod.label}</p>
+                    <p className="text-muted-foreground">{mod.description}</p>
                   </TooltipContent>
                 )}
               </Tooltip>
@@ -111,20 +112,20 @@ function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; onNavig
         </nav>
       </ScrollArea>
 
-      <Separator />
+      <Separator className="opacity-60" />
 
       {/* Collapse button (desktop only) */}
       <div className="p-3 hidden lg:block">
         <Button
           variant="ghost"
           size="sm"
-          className="w-full justify-center gap-2 text-muted-foreground"
+          className="w-full justify-center gap-2 text-muted-foreground/60 hover:text-muted-foreground h-8 text-xs"
           onClick={() => setSidebarOpen(!sidebarOpen)}
         >
           <ChevronLeft
-            className={`w-4 h-4 transition-transform duration-200 ${sidebarOpen ? '' : 'rotate-180'}`}
+            className={`w-3.5 h-3.5 transition-transform duration-300 ${sidebarOpen ? '' : 'rotate-180'}`}
           />
-          {!collapsed && <span className="text-xs">Recolher</span>}
+          {!collapsed && <span>Recolher</span>}
         </Button>
       </div>
     </div>
@@ -140,19 +141,44 @@ function useMounted() {
 }
 
 function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme, resolvedTheme } = useTheme()
   const mounted = useMounted()
 
   if (!mounted) return <div className="w-9 h-9" />
+
+  const isDark = resolvedTheme === 'dark'
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      className="h-9 w-9 text-muted-foreground hover:text-foreground"
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="relative h-9 w-9 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg btn-press"
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      aria-label={isDark ? 'Ativar modo claro' : 'Ativar modo escuro'}
     >
-      {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+      <AnimatePresence mode="wait">
+        {isDark ? (
+          <motion.div
+            key="sun"
+            initial={{ rotate: -90, scale: 0, opacity: 0 }}
+            animate={{ rotate: 0, scale: 1, opacity: 1 }}
+            exit={{ rotate: 90, scale: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+          >
+            <Sun className="w-4 h-4" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ rotate: 90, scale: 0, opacity: 0 }}
+            animate={{ rotate: 0, scale: 1, opacity: 1 }}
+            exit={{ rotate: -90, scale: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+          >
+            <Moon className="w-4 h-4" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Button>
   )
 }
@@ -180,7 +206,7 @@ export default function ErpPage() {
     <div className="flex h-screen overflow-hidden bg-background">
       {/* Desktop Sidebar */}
       <aside
-        className={`hidden lg:flex flex-col border-r bg-card transition-all duration-300 ease-in-out ${
+        className={`hidden lg:flex flex-col sidebar-glass transition-all duration-300 ease-in-out ${
           sidebarOpen ? 'w-60' : 'w-[68px]'
         }`}
       >
@@ -193,12 +219,12 @@ export default function ErpPage() {
           <Button
             variant="ghost"
             size="icon"
-            className="fixed top-3 left-3 z-50 lg:hidden h-9 w-9 bg-background/80 backdrop-blur-sm border shadow-sm"
+            className="fixed top-3 left-3 z-50 lg:hidden h-9 w-9 glass-card rounded-lg border shadow-sm"
           >
             <Menu className="w-4 h-4" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-60 p-0">
+        <SheetContent side="left" className="w-60 p-0 sidebar-glass border-0">
           <SidebarContent collapsed={false} onNavigate={() => {}} />
         </SheetContent>
       </Sheet>
@@ -206,16 +232,26 @@ export default function ErpPage() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Bar */}
-        <header className="flex items-center justify-between h-14 px-4 lg:px-6 border-b bg-card/50 backdrop-blur-sm shrink-0">
+        <header className="flex items-center justify-between h-14 px-4 lg:px-6 border-b bg-card/60 backdrop-blur-md shrink-0 gradient-border-bottom">
           <div className="flex items-center gap-3 pl-10 lg:pl-0">
             {currentModule && (
-              <div className="flex items-center gap-2">
-                <currentModule.icon className="w-4 h-4 text-muted-foreground" />
-                <h2 className="text-sm font-semibold">{currentModule.label}</h2>
-                <span className="hidden sm:inline text-xs text-muted-foreground">
-                  — {currentModule.description}
-                </span>
-              </div>
+              <motion.div
+                key={activeModule}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex items-center gap-2.5"
+              >
+                <div className="flex items-center justify-center w-7 h-7 rounded-md bg-primary/10 text-primary">
+                  <currentModule.icon className="w-3.5 h-3.5" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-semibold leading-none">{currentModule.label}</h2>
+                  <span className="hidden sm:inline text-[11px] text-muted-foreground leading-none mt-0.5 block">
+                    {currentModule.description}
+                  </span>
+                </div>
+              </motion.div>
             )}
           </div>
           <div className="flex items-center gap-2">
@@ -224,24 +260,27 @@ export default function ErpPage() {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeModule}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2, ease: 'easeInOut' }}
-              className="h-full"
-            >
-              <ActiveComponent />
-            </motion.div>
-          </AnimatePresence>
+        <div className="flex-1 overflow-auto main-gradient-bg">
+          <div className="p-4 lg:p-6">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeModule}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+              >
+                <ActiveComponent />
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Footer */}
-        <footer className="flex items-center justify-center px-4 py-2 border-t bg-card/50 text-xs text-muted-foreground shrink-0">
-          © 2025 TechERP v2.0 — Sistema de Gestão Empresarial
+        <footer className="flex items-center justify-center px-4 py-2 border-t bg-card/40 backdrop-blur-sm text-[11px] text-muted-foreground/60 shrink-0">
+          <span>© 2025 TechERP v2.0</span>
+          <span className="mx-2 opacity-30">·</span>
+          <span>Sistema de Gestão Empresarial</span>
         </footer>
       </main>
     </div>

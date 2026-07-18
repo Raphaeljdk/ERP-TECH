@@ -145,40 +145,40 @@ export default function Financeiro() {
     <div className="space-y-4">
       {/* Summary Cards */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <Card>
+        <Card className="glass-card stat-card">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
                 <ArrowDownCircle className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total a Receber</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total a Receber</p>
                 <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-28" /> : formatCurrency(resumo.totalReceber)}</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="glass-card stat-card">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-red-100 text-red-600 dark:bg-red-950 dark:text-red-400">
                 <ArrowUpCircle className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total a Pagar</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total a Pagar</p>
                 <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-28" /> : formatCurrency(resumo.totalPagar)}</div>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="glass-card stat-card">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-400">
                 <AlertTriangle className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Total em Atraso</p>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total em Atraso</p>
                 <div className="text-lg font-bold">{loadingResumo ? <Skeleton className="h-6 w-28" /> : formatCurrency(resumo.totalAtraso)}</div>
               </div>
             </div>
@@ -207,23 +207,23 @@ export default function Financeiro() {
           </Select>
           <div className="flex items-center gap-2">
             <Label className="text-sm text-muted-foreground whitespace-nowrap">De:</Label>
-            <Input type="date" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} className="w-36 h-9" />
+            <Input type="date" value={dataInicio} onChange={(e) => setDataInicio(e.target.value)} className="w-36 h-9 rounded-lg" />
             <Label className="text-sm text-muted-foreground whitespace-nowrap">Até:</Label>
-            <Input type="date" value={dataFim} onChange={(e) => setDataFim(e.target.value)} className="w-36 h-9" />
+            <Input type="date" value={dataFim} onChange={(e) => setDataFim(e.target.value)} className="w-36 h-9 rounded-lg" />
           </div>
         </div>
-        <Button size="sm" onClick={() => setDialogOpen(true)}>
+        <Button size="sm" onClick={() => setDialogOpen(true)} className="btn-press rounded-lg">
           <Plus className="mr-2 h-4 w-4" />
           Nova Conta
         </Button>
       </div>
 
-      <Card>
+      <Card className="glass-card">
         <CardContent className="p-0">
           <div className="max-h-[calc(100vh-380px)] min-h-[300px] overflow-y-auto custom-scrollbar">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="table-header-row">
                   <TableHead>Descrição</TableHead>
                   <TableHead className="hidden md:table-cell">Cliente</TableHead>
                   <TableHead>Tipo</TableHead>
@@ -247,20 +247,20 @@ export default function Financeiro() {
                     ? (
                       <TableRow>
                         <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                          Nenhuma conta encontrada
+                          <span className="font-semibold">Nenhuma conta encontrada</span>
                         </TableCell>
                       </TableRow>
                     )
                     : contas.map((c) => (
-                        <TableRow key={c.id}>
-                          <TableCell className="font-medium">{c.descricao}</TableCell>
-                          <TableCell className="hidden md:table-cell">{c.cliente?.nome || '—'}</TableCell>
+                        <TableRow key={c.id} className="table-row-hover">
+                          <TableCell className="font-medium text-sm">{c.descricao}</TableCell>
+                          <TableCell className="hidden md:table-cell text-sm">{c.cliente?.nome || '—'}</TableCell>
                           <TableCell>
-                            <Badge variant="outline" className={c.tipo === 'RECEBER' ? 'border-emerald-500 text-emerald-600' : 'border-red-500 text-red-600'}>
+                            <Badge variant="outline" className={`badge-elevated ${c.tipo === 'RECEBER' ? 'border-emerald-500 text-emerald-600' : 'border-red-500 text-red-600'}`}>
                               {c.tipo === 'RECEBER' ? 'Receber' : 'Pagar'}
                             </Badge>
                           </TableCell>
-                          <TableCell className="text-right font-mono text-sm">{formatCurrency(c.valor)}</TableCell>
+                          <TableCell className="text-right font-mono text-sm font-medium">{formatCurrency(c.valor)}</TableCell>
                           <TableCell className="hidden sm:table-cell text-sm">{formatDate(c.dataVencimento)}</TableCell>
                           <TableCell>
                             <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[c.status] || ''}`}>
@@ -276,7 +276,7 @@ export default function Financeiro() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="h-7 text-xs text-emerald-600 hover:text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+                                className="btn-press rounded-lg h-7 text-xs text-emerald-600 hover:text-emerald-700 border-emerald-300 hover:bg-emerald-50"
                                 onClick={() => pagarMutation.mutate(c.id)}
                               >
                                 <CheckCircle2 className="mr-1 h-3 w-3" />
@@ -302,7 +302,7 @@ export default function Financeiro() {
           <div className="grid gap-4 py-4">
             <div className="space-y-2">
               <Label>Descrição</Label>
-              <Input value={form.descricao} onChange={(e) => setForm(f => ({ ...f, descricao: e.target.value }))} placeholder="Descrição da conta" />
+              <Input value={form.descricao} onChange={(e) => setForm(f => ({ ...f, descricao: e.target.value }))} placeholder="Descrição da conta" className="rounded-lg" />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
@@ -317,13 +317,13 @@ export default function Financeiro() {
               </div>
               <div className="space-y-2">
                 <Label>Valor</Label>
-                <Input type="number" step="0.01" value={form.valor} onChange={(e) => setForm(f => ({ ...f, valor: parseFloat(e.target.value) || 0 }))} />
+                <Input type="number" step="0.01" value={form.valor} onChange={(e) => setForm(f => ({ ...f, valor: parseFloat(e.target.value) || 0 }))} className="rounded-lg" />
               </div>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>Vencimento</Label>
-                <Input type="date" value={form.dataVencimento} onChange={(e) => setForm(f => ({ ...f, dataVencimento: e.target.value }))} />
+                <Input type="date" value={form.dataVencimento} onChange={(e) => setForm(f => ({ ...f, dataVencimento: e.target.value }))} className="rounded-lg" />
               </div>
               <div className="space-y-2">
                 <Label>Forma Pagamento</Label>
@@ -339,8 +339,8 @@ export default function Financeiro() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancelar</Button>
-            <Button onClick={() => createMutation.mutate()} disabled={createMutation.isPending}>
+            <Button variant="outline" onClick={() => setDialogOpen(false)} className="btn-press">Cancelar</Button>
+            <Button onClick={() => createMutation.mutate()} disabled={createMutation.isPending} className="btn-press rounded-lg">
               Criar Conta
             </Button>
           </DialogFooter>

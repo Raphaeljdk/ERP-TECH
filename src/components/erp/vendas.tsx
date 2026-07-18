@@ -204,7 +204,7 @@ export default function Vendas() {
                 placeholder="Digite o nome ou código do produto..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9"
+                className="pl-9 rounded-lg"
               />
             </div>
             <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
@@ -219,7 +219,7 @@ export default function Vendas() {
                 : produtos.map((p) => (
                     <div
                       key={p.id}
-                      className={`rounded-lg border p-4 hover:border-primary/50 hover:bg-accent/50 transition-colors cursor-pointer group ${highlightId === p.id ? 'cart-item-highlight ring-1 ring-primary/30' : ''}`}
+                      className={`glass-card product-card p-4 cursor-pointer group ${highlightId === p.id ? 'cart-item-highlight ring-1 ring-primary/30' : ''}`}
                       onClick={() => addToCart(p)}
                     >
                       <div className="flex items-start gap-3">
@@ -233,7 +233,7 @@ export default function Vendas() {
                       </div>
                       <div className="flex items-center justify-between mt-3 pl-12">
                         <span className="font-semibold text-sm">{formatCurrency(p.precoVenda)}</span>
-                        <Button size="sm" className="h-7 text-xs opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button size="sm" className="h-7 text-xs opacity-0 group-hover:opacity-100 transition-opacity btn-press rounded-lg">
                           <Plus className="h-3 w-3 mr-1" /> Adicionar
                         </Button>
                       </div>
@@ -257,7 +257,7 @@ export default function Vendas() {
             <div className="max-h-72 overflow-y-auto custom-scrollbar">
               <Table>
                 <TableHeader>
-                  <TableRow>
+                  <TableRow className="table-header-row">
                     <TableHead>Nº</TableHead>
                     <TableHead>Cliente</TableHead>
                     <TableHead className="hidden sm:table-cell">Pagamento</TableHead>
@@ -267,20 +267,20 @@ export default function Vendas() {
                 </TableHeader>
                 <TableBody>
                   {vendasRecentes.length === 0 ? (
-                    <TableRow>
+                    <TableRow className="table-row-hover">
                       <TableCell colSpan={5} className="text-center py-6 text-muted-foreground text-sm">
                         Nenhuma venda recente
                       </TableCell>
                     </TableRow>
                   ) : (
                     vendasRecentes.map((v) => (
-                      <TableRow key={v.id}>
-                        <TableCell className="font-mono text-sm">#{v.numero}</TableCell>
+                      <TableRow key={v.id} className="table-row-hover">
+                        <TableCell className="font-mono text-sm font-medium">#{v.numero}</TableCell>
                         <TableCell>{v.cliente?.nome || 'Consumidor Final'}</TableCell>
                         <TableCell className="hidden sm:table-cell">
-                          <Badge variant="outline" className="text-xs">{v.formaPagamento}</Badge>
+                          <Badge variant="outline" className="text-xs badge-elevated">{v.formaPagamento}</Badge>
                         </TableCell>
-                        <TableCell className="text-right font-mono text-sm">{formatCurrency(v.total)}</TableCell>
+                        <TableCell className="text-right font-mono text-sm font-medium">{formatCurrency(v.total)}</TableCell>
                         <TableCell className="hidden md:table-cell text-sm">{formatDate(v.dataVenda)}</TableCell>
                       </TableRow>
                     ))
@@ -294,9 +294,9 @@ export default function Vendas() {
 
       {/* Right: Cart */}
       <div className="space-y-4">
-        <Card className="sticky top-4">
+        <Card className="sticky top-4 glass-card">
           <CardHeader className="pb-3">
-            <div className="h-1 -mt-4 -mx-6 mb-2 rounded-b-lg bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-600" />
+            <div className="h-1 -mt-4 -mx-6 mb-2 rounded-t-lg bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-600" />
             <div className="flex items-center justify-between">
               <CardTitle className="text-base flex items-center gap-2">
                 <ShoppingCart className="h-4 w-4" />
@@ -306,7 +306,7 @@ export default function Vendas() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 text-xs text-muted-foreground hover:text-destructive"
+                  className="h-7 text-xs text-muted-foreground hover:text-destructive btn-press rounded-lg"
                   onClick={() => { setCart([]); setDiscount(0) }}
                 >
                   <XCircle className="h-3 w-3 mr-1" />
@@ -321,7 +321,7 @@ export default function Vendas() {
               <Label className="text-xs text-muted-foreground">Cliente</Label>
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="outline" className="w-full justify-start text-sm h-9">
+                  <Button variant="outline" className="w-full justify-start text-sm h-9 btn-press rounded-lg">
                     <UserCheck className="mr-2 h-3.5 w-3.5" />
                     {clienteId === '__consumidor_final__' ? 'Consumidor Final' : cart.length >= 0 ? 'Selecionar cliente' : 'Consumidor Final'}
                   </Button>
@@ -331,12 +331,12 @@ export default function Vendas() {
                     placeholder="Buscar cliente..."
                     value={clienteSearch}
                     onChange={(e) => setClienteSearch(e.target.value)}
-                    className="mb-2"
+                    className="mb-2 rounded-lg"
                   />
                   <Button
                     variant="ghost"
                     size="sm"
-                    className={`w-full justify-start text-sm ${clienteId === '__consumidor_final__' ? 'bg-accent' : ''}`}
+                    className={`w-full justify-start text-sm btn-press rounded-lg ${clienteId === '__consumidor_final__' ? 'bg-accent' : ''}`}
                     onClick={() => setClienteId('__consumidor_final__')}
                   >
                     Consumidor Final
@@ -348,7 +348,7 @@ export default function Vendas() {
                         key={c.id}
                         variant="ghost"
                         size="sm"
-                        className={`w-full justify-start text-sm ${clienteId === c.id ? 'bg-accent' : ''}`}
+                        className={`w-full justify-start text-sm btn-press rounded-lg ${clienteId === c.id ? 'bg-accent' : ''}`}
                         onClick={() => { setClienteId(c.id); setClienteSearch('') }}
                       >
                         {c.nome}
@@ -370,20 +370,20 @@ export default function Vendas() {
                 </div>
               ) : (
                 cart.map((item) => (
-                  <div key={item.produto.id} className="flex items-center gap-2 rounded-lg border p-3">
+                  <div key={item.produto.id} className="flex items-center gap-2 glass-card rounded-lg p-3">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{item.produto.nome}</p>
                       <p className="text-xs text-muted-foreground">{formatCurrency(item.produto.precoVenda)} × {item.quantidade}</p>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => updateQty(item.produto.id, -1)}>
+                      <Button variant="outline" size="icon" className="h-7 w-7 btn-press rounded-lg" onClick={() => updateQty(item.produto.id, -1)}>
                         <Minus className="h-3 w-3" />
                       </Button>
                       <span className="w-8 text-center text-sm font-medium">{item.quantidade}</span>
-                      <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => updateQty(item.produto.id, 1)}>
+                      <Button variant="outline" size="icon" className="h-7 w-7 btn-press rounded-lg" onClick={() => updateQty(item.produto.id, 1)}>
                         <Plus className="h-3 w-3" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-7 w-7 text-red-500 hover:text-red-600 ml-1" onClick={() => removeItem(item.produto.id)}>
+                      <Button variant="ghost" size="icon" className="h-7 w-7 text-red-500 hover:text-red-600 ml-1 btn-press rounded-lg" onClick={() => removeItem(item.produto.id)}>
                         <Trash2 className="h-3 w-3" />
                       </Button>
                     </div>
@@ -406,7 +406,7 @@ export default function Vendas() {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="font-mono">{formatCurrency(subtotal)}</span>
+                <span className="font-mono text-sm font-medium">{formatCurrency(subtotal)}</span>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <Label className="text-muted-foreground whitespace-nowrap">Desconto (R$)</Label>
@@ -416,7 +416,7 @@ export default function Vendas() {
                   min={0}
                   value={discount || ''}
                   onChange={(e) => setDiscount(parseFloat(e.target.value) || 0)}
-                  className="w-28 h-8 text-right"
+                  className="w-28 h-8 text-right rounded-lg"
                   placeholder="0,00"
                 />
               </div>
@@ -436,7 +436,7 @@ export default function Vendas() {
             </div>
 
             <Button
-              className="w-full"
+              className="w-full btn-press rounded-lg"
               size="lg"
               disabled={cart.length === 0 || finishMutation.isPending}
               onClick={() => setConfirmOpen(true)}
@@ -462,18 +462,18 @@ export default function Vendas() {
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Subtotal</span>
-              <span className="font-mono">{formatCurrency(subtotal)}</span>
+              <span className="font-mono text-sm font-medium">{formatCurrency(subtotal)}</span>
             </div>
             {discount > 0 && (
               <div className="flex justify-between text-red-500">
                 <span>Desconto</span>
-                <span className="font-mono">-{formatCurrency(discount)}</span>
+                <span className="font-mono text-sm font-medium">-{formatCurrency(discount)}</span>
               </div>
             )}
             <Separator />
             <div className="flex justify-between font-bold text-base">
               <span>Total</span>
-              <span className="font-mono text-primary">{formatCurrency(grandTotal)}</span>
+              <span className="font-mono text-sm font-medium text-primary">{formatCurrency(grandTotal)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Pagamento</span>
@@ -481,8 +481,8 @@ export default function Vendas() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmOpen(false)}>Cancelar</Button>
-            <Button onClick={() => finishMutation.mutate()} disabled={finishMutation.isPending}>
+            <Button variant="outline" className="btn-press rounded-lg" onClick={() => setConfirmOpen(false)}>Cancelar</Button>
+            <Button className="btn-press rounded-lg" onClick={() => finishMutation.mutate()} disabled={finishMutation.isPending}>
               Confirmar Venda
             </Button>
           </DialogFooter>
