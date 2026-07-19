@@ -51,4 +51,36 @@ prompt
 
 server.log
 # Skills directory
-/skills/
+/skills/node_modules
+.env
+db/*.db
+db/*.db-journal
+dev.log
+*.png
+.wrangler/
+skills/
+worklog.md
+erp-check.png
+check-*.png
+after-*.png
+erp-*.png
+.env
+db/
+*.png
+agent-ctx/
+download/
+.zscripts/
+Caddyfile
+seed-*.ts
+seed-all.ts
+seed-clientes-vendas.ts
+worklog.md
+dev.log
+scripts/
+examples/
+mini-services/
+skills/
+public/logo.svg
+examples/
+tool-results/
+upload/
