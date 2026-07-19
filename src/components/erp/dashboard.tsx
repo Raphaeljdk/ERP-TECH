@@ -352,8 +352,8 @@ export default function Dashboard() {
                 <ChartContainer config={lineChartConfig} className="h-[250px] w-full">
                   <LineChart data={d.vendas7Dias} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" className="stroke-border/50" />
-                    <XAxis dataKey="dia" fontSize={11} tickLine={false} axisLine={false} tick={{ fill: 'oklch(0.45 0.02 155)' }} />
-                    <YAxis fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v: number) => `R$${(v / 1000).toFixed(0)}k`} tick={{ fill: 'oklch(0.45 0.02 155)' }} />
+                    <XAxis dataKey="dia" fontSize={11} tickLine={false} axisLine={false} tick={{ fill: 'var(--muted-foreground)' }} />
+                    <YAxis fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v: number) => `R$${(v / 1000).toFixed(0)}k`} tick={{ fill: 'var(--muted-foreground)' }} />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Line
                       type="monotone"
@@ -387,8 +387,8 @@ export default function Dashboard() {
                 <ChartContainer config={barChartConfig} className="h-[250px] w-full">
                   <BarChart data={d.topProdutos} layout="vertical" margin={{ top: 5, right: 20, left: 60, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" className="stroke-border/50" horizontal={false} />
-                    <XAxis type="number" fontSize={11} tickLine={false} axisLine={false} tick={{ fill: 'oklch(0.45 0.02 155)' }} />
-                    <YAxis dataKey="nome" type="category" fontSize={11} tickLine={false} axisLine={false} width={120} tick={{ fill: 'oklch(0.35 0.02 155)' }} />
+                    <XAxis type="number" fontSize={11} tickLine={false} axisLine={false} tick={{ fill: 'var(--muted-foreground)' }} />
+                    <YAxis dataKey="nome" type="category" fontSize={11} tickLine={false} axisLine={false} width={120} tick={{ fill: 'var(--foreground)' }} />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar dataKey="quantidade" fill="var(--color-quantidade)" radius={[0, 6, 6, 0]} />
                   </BarChart>

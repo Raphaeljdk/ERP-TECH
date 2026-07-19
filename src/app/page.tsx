@@ -59,7 +59,7 @@ function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; onNavig
             className="overflow-hidden"
           >
             <h1 className="text-lg font-bold tracking-tight whitespace-nowrap gradient-text">TechERP</h1>
-            <p className="text-[10px] text-muted-foreground/70 whitespace-nowrap font-medium tracking-wide uppercase">Gestão Empresarial</p>
+            <p className="text-[10px] text-sidebar-foreground/60 whitespace-nowrap font-medium tracking-wide uppercase">Gestão Empresarial</p>
           </motion.div>
         )}
       </div>
@@ -80,7 +80,7 @@ function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; onNavig
                     className={`w-full justify-start gap-3 h-10 px-3 rounded-lg transition-all duration-150 ${
                       isActive
                         ? 'nav-item-active shadow-sm'
-                        : 'text-muted-foreground/80 hover:text-foreground hover:bg-white/5 dark:hover:bg-white/5'
+                        : 'text-sidebar-foreground hover:text-sidebar-foreground hover:bg-white/8 dark:hover:bg-white/8'
                     }`}
                     onClick={() => {
                       setActiveModule(mod.key)
@@ -247,7 +247,7 @@ export default function ErpPage() {
                 </div>
                 <div>
                   <h2 className="text-sm font-semibold leading-none">{currentModule.label}</h2>
-                  <span className="hidden sm:inline text-[11px] text-muted-foreground leading-none mt-0.5 block">
+                  <span className="hidden sm:inline text-[11px] text-foreground/70 leading-none mt-0.5 block">
                     {currentModule.description}
                   </span>
                 </div>
@@ -277,7 +277,7 @@ export default function ErpPage() {
         </div>
 
         {/* Footer */}
-        <footer className="flex items-center justify-center px-4 py-2 border-t bg-card/40 backdrop-blur-sm text-[11px] text-muted-foreground/60 shrink-0">
+        <footer className="flex items-center justify-center px-4 py-2 border-t bg-card/40 backdrop-blur-sm text-[11px] text-muted-foreground/80 shrink-0">
           <span>© 2025 TechERP v2.0</span>
           <span className="mx-2 opacity-30">·</span>
           <span>Sistema de Gestão Empresarial</span>
