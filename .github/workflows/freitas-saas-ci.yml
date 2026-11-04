@@ -1,0 +1,38 @@
+name: Freitas ERP — Verificação de Laboratório
+on:
+  push:
+    branches: [freitas-erp-saas-staging]
+    paths:
+      - 'freitas-saas/**'
+      - '.github/workflows/freitas-saas-ci.yml'
+  pull_request:
+    paths:
+      - 'freitas-saas/**'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Node 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+      - name: Install
+        working-directory: freitas-saas
+        run: npm install --no-audit --no-fund
+      - name: Unit tests
+        working-directory: freitas-saas
+        run: npm test
+      - name: Type check
+        working-directory: freitas-saas
+        run: npm run typecheck
+      - name: Build
+        working-directory: freitas-saas
+        env:
+          NEXT_PUBLIC_DEMO_MODE: 'true'
+        run: npm run build
