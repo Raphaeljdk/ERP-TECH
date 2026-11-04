@@ -42,7 +42,7 @@ function Car3D({marks,onPick}:{marks:R[];onPick:(part:string,position:[number,nu
  const rim=new THREE.MeshStandardMaterial({color:0xb6d3d8,metalness:.8,roughness:.3});
  const vehicle=new THREE.Group();scene.add(vehicle);
  const clickable:import("three").Object3D[]=[];
- const makeBox=(w:number,h:number,d:number,x:number,y:number,z:number,part?:string,mat=paint)=>{
+ const makeBox=(w:number,h:number,d:number,x:number,y:number,z:number,part?:string,mat:import("three").Material=paint)=>{
  const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);
  if(part){m.userData.part=part;clickable.push(m)}vehicle.add(m);return m;};
  makeBox(1.98,.53,4.55,0,.85,0);
