@@ -1,7 +1,7 @@
 # Backlog aprovado para análise — 04/11/2026
 
 ## Limite de escopo
-Este documento pertence ao laboratório independente **Freitas ERP SaaS**. Não executar deploy, migração, configuração ou alterações em **Ducha Elitte/AquaFlow** por consequência deste backlog. Os itens 14–16 fazem referência explícita à Ducha Elitte e exigem execução separada no projeto correto, mediante autorização.
+Este documento pertence ao laboratório independente **Freitas ERP SaaS**. Não executar deploy, migração, configuração ou alterações em **Ducha Elitte/AquaFlow** por consequência deste backlog. **Todos os itens 1–16 pertencem exclusivamente ao Freitas ERP SaaS**, inclusive a plataforma comercial, aplicativos, maquininhas e e-mail de gestão. Ducha Elitte/AquaFlow não faz parte do escopo e não pode ser modificada.
 
 ## A. Operação — prioridade alta
 - [ ] **Vistoria PDF visual:** gerar PDF com captura fiel do veículo na orientação da tela e marcações de avarias, legenda por peça, tipo, gravidade, data, operador e comanda; manter exportação legível mesmo sem WebGL, evitar vazamento de dados e preservar o original.
@@ -17,19 +17,19 @@ Este documento pertence ao laboratório independente **Freitas ERP SaaS**. Não 
 - [ ] **Produtividade:** veículos concluídos, tempo médio e mediano entre abertura e pronto, tempo por serviço/profissional/unidade, atrasos, receita e custos, por período; excluir cancelados de métricas de conclusão.
 - [ ] **Exportação:** CSV UTF-8 e XLSX, filtros por datas e permissões, totais reconciliáveis, proteção contra CSV formula injection e trilha de exportação.
 
-## C. Comercial e plataforma — projeto correto a confirmar
+## C. Comercial e plataforma — Freitas ERP SaaS
 - [ ] **Lojas parceiras:** cadastro, desconto por regra, vigência, elegibilidade, auditoria e limites de uso.
 - [ ] **Indicações:** links únicos com token não adivinhável, atribuição de lead, deduplicação, consentimento, eventos de conversão, comissões pendentes/aprovadas/pagas, antifraude e estorno.
 - [ ] **Financeiro e caixa:** sessões por operador/unidade, sangria/suprimento, conferência por meio de pagamento, diferença de caixa, contas a pagar/receber, conciliação, estorno e relatórios.
-- [ ] **Ducha Elitte — SaaS:** homologar cadastro autônomo, teste de 7 dias, banco Neon dedicado por empresa, convites por e-mail, checkout e webhooks Stripe com idempotência; **NÃO aplicar neste repositório** sem decisão expressa.
-- [ ] **Ducha Elitte — aplicativos/maquininhas:** avaliar App Store, Play Store e SDKs/catálogos oficiais das adquirentes; distribuição condicionada a requisitos de cada fabricante; **NÃO publicar nem prometer compatibilidade sem homologação**.
-- [ ] **Ducha Elitte — e-mail de gestão:** titular cria conta exclusiva e configura MFA/passkeys, recuperação, domínio e acessos mínimos; nunca solicitar senha ou código ao assistente. Credenciais somente em cofre privado.
+- [ ] **Freitas ERP — SaaS:** homologar cadastro autônomo, teste de 7 dias, banco Neon dedicado por empresa, convites por e-mail, checkout e webhooks Stripe com idempotência; Implementar somente neste projeto, com infraestrutura e credenciais próprias.
+- [ ] **Freitas ERP — aplicativos/maquininhas:** avaliar App Store, Play Store e SDKs/catálogos oficiais das adquirentes; distribuição condicionada a requisitos de cada fabricante; Não publicar nem prometer compatibilidade sem homologação.
+- [ ] **Freitas ERP — e-mail de gestão:** titular cria conta exclusiva e configura MFA/passkeys, recuperação, domínio e acessos mínimos; nunca solicitar senha ou código ao assistente. Credenciais somente em cofre privado.
 
 ## Critérios de aceite
 1. Testes automatizados de regras financeiras, estoque, cancelamento e isolamento multiempresa.
 2. E2E de comanda com serviço e produto, pagamento por meio, vistoria, PDF e fechamento.
 3. Testes de PDF em desktop e iPhone/Android, com WebGL indisponível.
 4. Auditoria completa para mudanças de tipo, avarias, preço, cancelamento e comissões.
-5. Nenhuma alteração ou deploy em produção da Ducha Elitte a partir deste backlog.
+5. Todas as entregas são exclusivas do Freitas ERP; nenhuma alteração, integração, credencial ou deploy da Ducha Elitte.
 
-**Estado:** requisitos documentados; nenhum item marcado como implementado ou homologado neste documento.
+**Decisão de escopo confirmada pelo titular:** requisitos 1–16 exclusivos do Freitas ERP. **Estado:** requisitos documentados; nenhum item marcado como implementado ou homologado neste documento.
